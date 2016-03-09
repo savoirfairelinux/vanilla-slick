@@ -2805,23 +2805,34 @@
             _.slideCount > _.options.slidesToShow &&
             !_.options.infinite ) {
 
-            _.$prevArrow.removeClass('slick-disabled').attr('aria-disabled', 'false');
-            _.$nextArrow.removeClass('slick-disabled').attr('aria-disabled', 'false');
+            var $prevArrow = _.$prevArrow[0],
+                $nextArrow = _.$nextArrow[0];
+            
+            $prevArrow.classList.remove('slick-disabled');
+            $prevArrow.setAttribute('aria-disabled', 'false');
+            $nextArrow.classList.remove('slick-disabled');
+            $nextArrow.setAttribute('aria-disabled', 'false');
 
             if (_.currentSlide === 0) {
 
-                _.$prevArrow.addClass('slick-disabled').attr('aria-disabled', 'true');
-                _.$nextArrow.removeClass('slick-disabled').attr('aria-disabled', 'false');
+                $prevArrow.classList.add('slick-disabled');
+                $prevArrow.setAttribute('aria-disabled', 'true');
+                $nextArrow.classList.remove('slick-disabled');
+                $nextArrow.setAttribute('aria-disabled', 'false');
 
             } else if (_.currentSlide >= _.slideCount - _.options.slidesToShow && _.options.centerMode === false) {
 
-                _.$nextArrow.addClass('slick-disabled').attr('aria-disabled', 'true');
-                _.$prevArrow.removeClass('slick-disabled').attr('aria-disabled', 'false');
+                $nextArrow.classList.add('slick-disabled');
+                $nextArrow.setAttribute('aria-disabled', 'true');
+                $prevArrow.classList.remove('slick-disabled');
+                $prevArrow.setAttribute('aria-disabled', 'false');
 
             } else if (_.currentSlide >= _.slideCount - 1 && _.options.centerMode === true) {
 
-                _.$nextArrow.addClass('slick-disabled').attr('aria-disabled', 'true');
-                _.$prevArrow.removeClass('slick-disabled').attr('aria-disabled', 'false');
+                $nextArrow.classList.add('slick-disabled');
+                $nextArrow.setAttribute('aria-disabled', 'true');
+                $prevArrow.classList.remove('slick-disabled');
+                $prevArrow.setAttribute('aria-disabled', 'false');
 
             }
 
