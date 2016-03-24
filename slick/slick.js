@@ -1983,10 +1983,20 @@
     Slick.prototype.setHeight = function() {
 
         var _ = this;
+        function outerHeight(el) {
+          var height = el.offsetHeight;
+          var style = getComputedStyle(el);
+
+          height += parseInt(style.marginTop) + parseInt(style.marginBottom);
+          return height;
+        }
+
 
         if (_.options.slidesToShow === 1 && _.options.adaptiveHeight === true && _.options.vertical === false) {
-            var targetHeight = _.$slides.eq(_.currentSlide).outerHeight(true);
-            _.$list.css('height', targetHeight);
+            var targetHeight = outerHeight(_.$slides.get()[_.currentSlide]);
+            _.$list.get().forEach(function(elem){
+                elem.style.height = targetHeight;
+            });
         }
 
     };
