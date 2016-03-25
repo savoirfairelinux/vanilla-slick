@@ -2913,6 +2913,19 @@
         return out;
     };
 
+    // @param  {Node} el The base element
+    // @param  {String} selector The class, id, data attribute, or tag to look for
+    // Equivalent to jQuery `.is()` method
+    Slick.prototype.matches = function(el, selector) {
+        return (el.matches
+                || el.matchesSelector
+                || el.msMatchesSelector
+                || el.mozMatchesSelector
+                || el.webkitMatchesSelector
+                || el.oMatchesSelector)
+            .call(el, selector);
+    };
+
 
     $.fn.slick = function() {
         var _ = this,
