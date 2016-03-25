@@ -117,7 +117,7 @@
                 unslicked: false
             };
 
-            $.extend(_, _.initials);
+            _.extend(_, _.initials);
 
             _.activeBreakpoint = null;
             _.animType = null;
@@ -143,7 +143,7 @@
 
             dataSettings = $(element).data('slick') || {};
 
-            _.options = $.extend({}, _.defaults, settings, dataSettings);
+            _.options = _.extend({}, _.defaults, settings, dataSettings);
 
             _.currentSlide = _.options.initialSlide;
 
@@ -632,7 +632,7 @@
                         if (_.breakpointSettings[targetBreakpoint] === 'unslick') {
                             _.unslick(targetBreakpoint);
                         } else {
-                            _.options = $.extend({}, _.originalSettings,
+                            _.options = _.extend({}, _.originalSettings,
                                 _.breakpointSettings[
                                     targetBreakpoint]);
                             if (initial === true) {
@@ -647,7 +647,7 @@
                     if (_.breakpointSettings[targetBreakpoint] === 'unslick') {
                         _.unslick(targetBreakpoint);
                     } else {
-                        _.options = $.extend({}, _.originalSettings,
+                        _.options = _.extend({}, _.originalSettings,
                             _.breakpointSettings[
                                 targetBreakpoint]);
                         if (initial === true) {
@@ -1723,7 +1723,7 @@
 
         _.destroy(true);
 
-        $.extend(_, _.initials, { currentSlide: currentSlide });
+        _.extend(_, _.initials, { currentSlide: currentSlide });
 
         _.init();
 
@@ -2817,7 +2817,7 @@
 
             var $prevArrow = _.$prevArrow[0],
                 $nextArrow = _.$nextArrow[0];
-            
+
             $prevArrow.classList.remove('slick-disabled');
             $prevArrow.setAttribute('aria-disabled', 'false');
             $nextArrow.classList.remove('slick-disabled');
@@ -2890,6 +2890,29 @@
         }
 
     };
+
+    // @param {Object} out
+    // @return {Object} out
+    // @usage Slick.extend({}, objA, objB);
+    // Equivalent to $.extend
+    Slick.prototype.extend = function(out) {
+        out = out || {};
+
+        for (var i = 1; i < arguments.length; i++) {
+            if (!arguments[i]) {
+                continue;
+            }
+
+            for (var key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key)) {
+                    out[key] = arguments[i][key];
+                }
+            }
+        }
+
+        return out;
+    };
+
 
     $.fn.slick = function() {
         var _ = this,
