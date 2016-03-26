@@ -684,12 +684,12 @@
             indexOffset, slideOffset, unevenOffset;
 
         // If target is a link, prevent default action.
-        if($target.is('a')) {
+        if(_.matches($target[0],'a')) {
             event.preventDefault();
         }
 
         // If target is not the <li> element (ie: a child), find the <li>.
-        if(!$target.is('li')) {
+        if(!_.matches($target[0],'li')) {
             $target = $target.closest('li');
         }
 
@@ -1003,7 +1003,6 @@
     };
 
     Slick.prototype.focusHandler = function() {
-
         var _ = this;
 
         _.$slider
@@ -1011,19 +1010,18 @@
             .on('focus.slick blur.slick',
                 '*:not(.slick-arrow)', function(event) {
 
-            event.stopImmediatePropagation();
-            var $sf = $(this);
+                    event.stopImmediatePropagation();
+                    var $sf = $(this);
 
-            setTimeout(function() {
+                    setTimeout(function() {
+                        if ( _.options.pauseOnFocus ) {
+                            _.focussed = _.matches($sf[0],':focus');
+                            _.autoPlay();
+                        }
 
-                if( _.options.pauseOnFocus ) {
-                    _.focussed = $sf.is(':focus');
-                    _.autoPlay();
-                }
+                    }, 0);
 
-            }, 0);
-
-        });
+                });
     };
 
     Slick.prototype.getCurrent = Slick.prototype.slickCurrentSlide = function() {
@@ -2340,14 +2338,8 @@
     };
 
     Slick.prototype.selectHandler = function(event) {
-
         var _ = this;
-
-        var targetElement =
-            $(event.target).is('.slick-slide') ?
-                $(event.target) :
-                $(event.target).parents('.slick-slide');
-
+        var targetElement = _.matches($(event.target)[0],'.slick-slide') ? $(event.target) : $(event.target).parents('.slick-slide');
         var index = parseInt(targetElement.attr('data-slick-index'));
 
         if (!index) index = 0;
@@ -2915,7 +2907,9 @@
 
     // @param  {Node} el The base element
     // @param  {String} selector The class, id, data attribute, or tag to look for
-    // Equivalent to jQuery `.is()` method
+    // @return {Boolean} true || false
+    // @usage Slick.matches(el, '.my-class');
+    // Equivalent to jQuery .is() method
     Slick.prototype.matches = function(el, selector) {
         return (el.matches
                 || el.matchesSelector
