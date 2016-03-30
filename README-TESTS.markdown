@@ -5,7 +5,7 @@ The tests are written with [The Intern](https://theintern.github.io/).
 
 # Installation
 
-Only integration tests are used, but for this also other tools are needed. The following shows a list of these.
+Only integration tests are used, but for this we also need Selenium. The following shows how to get these dependencies.
 
 ## The intern
 
@@ -25,15 +25,11 @@ java -jar selenium-server-standalone-2.53.0.jar
 ```
 
 
-...or any other way you want.
-
 # Execution
 
 ```sh
 ./node_modules/.bin/intern-runner config=tests/intern
 ```
-
-# Configuration
 
 
 
