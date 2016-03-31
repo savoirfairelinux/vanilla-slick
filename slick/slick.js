@@ -1010,18 +1010,18 @@
             .on('focus.slick blur.slick',
                 '*:not(.slick-arrow)', function(event) {
 
-                    event.stopImmediatePropagation();
-                    var $sf = $(this);
+			event.stopImmediatePropagation();
+			var $sf = $(this);
 
-                    setTimeout(function() {
-                        if ( _.options.pauseOnFocus ) {
-                            _.focussed = _.matches($sf[0],':focus');
-                            _.autoPlay();
-                        }
+			setTimeout(function() {
+				if ( _.options.pauseOnFocus ) {
+					_.focussed = _.matches($sf[0],':focus');
+					_.autoPlay();
+				}
 
-                    }, 0);
+			}, 0);
 
-                });
+		});
     };
 
     Slick.prototype.getCurrent = Slick.prototype.slickCurrentSlide = function() {
