@@ -2848,16 +2848,16 @@
 
         if (_.$dots !== null) {
 
-            _.$dots
-                .find('li')
-                .removeClass('slick-active')
-                .attr('aria-hidden', 'true');
+            var $lis = _.$dots[0].querySelectorAll('li'),
+                $nextDot = $lis[Math.floor(_.currentSlide / _.options.slidesToScroll)];
 
-            _.$dots
-                .find('li')
-                .eq(Math.floor(_.currentSlide / _.options.slidesToScroll))
-                .addClass('slick-active')
-                .attr('aria-hidden', 'false');
+            Array.prototype.forEach.call($lis, function($myElem) {
+                $myElem.classList.remove('slick-active');
+                $myElem.setAttribute('aria-hidden', 'true');
+            });
+
+            $nextDot.classList.add('slick-active');
+            $nextDot.setAttribute('aria-hidden', 'false');
 
         }
 
