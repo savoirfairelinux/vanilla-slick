@@ -5,6 +5,41 @@ slick
 
 _the last carousel you'll ever need_
 
+
+## Vanilla-slick
+
+### État actuel
+
+![ ](http://img15.hostingpics.net/pics/573676UMLslickjQuery.png  "jquery-slick")
+
+Slick utilise jQuery pour chercher des éléments dans le DOM et les modifier. Les éléments stocker dans l'objet slick (exemple: slides) sont de type jQuery
+
+
+### Phase intermédiaire
+
+![ ](http://img15.hostingpics.net/pics/562379UMLslickjQuerynatif.png  "jquery-natif-slick")
+
+Pour "vanillier" slick, sans briser toutes les fonctions, il faut que les éléments stocké dans l'objet slick reste des objects de type jQuery.
+
+```js
+var objectVanille = _.slides.get(); // Récupère une array des objets natifs
+objectVanille[0].style.opacity = 0.5;  // On travail avec un object Vanille
+```
+
+```js
+var objectVanille = document.querySelectorAll('.selector')
+// ... On travail en vanille
+_.slides = $(objectVanille); // On converti l'object en jQuery lors de la sauvegarde
+```
+
+*Attention* : Un objet jQuery peut être une liste d'élément, ou bien un seul élément. Exemple: `$('.selecteur')` peut être une liste comme un élément seul. Cela est transparent en jQuery. En vanille, on a soit un élément, soit une Array d'élément, soit une NodeList...
+
+### Phase finale
+
+![ ](http://img15.hostingpics.net/pics/294046UMLslicknatif.png  "natif-slick")
+
+Il faudra retirer petit à petit tous les `.get()` et `$('')` pour que les éléments dans l'objet Slick deviennent aussi des objets "vanille"
+
 #### Demo
 
 [http://kenwheeler.github.io/slick](http://kenwheeler.github.io/slick/)
