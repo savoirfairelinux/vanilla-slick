@@ -14,6 +14,9 @@ _the last carousel you'll ever need_
 
 Slick utilise jQuery pour chercher des éléments dans le DOM et les modifier. Les éléments stocker dans l'objet slick (exemple: slides) sont de type jQuery
 
+### Document de travail
+
+https://pad.savoirfairelinux.com/p/slick
 
 ### Phase intermédiaire
 
