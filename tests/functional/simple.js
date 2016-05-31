@@ -5,13 +5,15 @@ define(function (require) {
     registerSuite({
         name: 'simple',
 
-        'no fail': function () {
+        'simple-item-goto-2': function () {
             return this.remote
                 .get(require.toUrl('src/sample/index.html'))
                 .setFindTimeout(5000)
-                .findById('slick-slide01')
+                .findById('single-item')
+                .findByCssSelector('[aria-controls="navigation01"]')
                 	.click()
                 	.end()
+                .findById('single-item')
                 .findByClassName('slick-current')
                 	.getVisibleText()
 	                .then(function (text) {
@@ -19,7 +21,56 @@ define(function (require) {
 	                        'The second slide should be active');
 	                });
         },
-        
+
+        'simple-item-goto-5': function () {
+            return this.remote
+                .get(require.toUrl('src/sample/index.html'))
+                .setFindTimeout(5000)
+                .findById('single-item')
+                .findByCssSelector('[aria-controls="navigation04"]')
+                    .click()
+                    .end()
+                .findById('single-item')
+                .findByClassName('slick-current')
+                    .sleep(300)
+                    .getVisibleText()
+                    .then(function (text) {
+                        assert.strictEqual('5', text,
+                            'The slide 5 should be active');
+                    });
+        },
+
+        'simple-item-back-6': function () {
+            return this.remote
+                .get(require.toUrl('src/sample/index.html'))
+                .setFindTimeout(5000)
+                .findById('single-item')
+                .findByCssSelector('.slick-prev.slick-arrow')
+                    .click()
+                    .end()
+                .findById('single-item')
+                .findByClassName('slick-current')
+                    .sleep(300)
+                    .getVisibleText()
+                    .then(function (text) {
+                        assert.strictEqual('6', text,
+                            'The slide 6 should be active');
+                    });
+        },
+
+        // 'adaptive height': function () {
+        //     return this.remote
+        //         .get(require.toUrl('src/sample/index.html'))
+        //         .setFindTimeout(5000)
+        //         .findById('adaptiveHeight')
+        //         .findByCssSelector('.slick-next.slick-arrow')
+        //             .click()
+        //             .end()
+        //         .findById('adaptiveHeight')
+        // },
+
+
+
 //        'fail': function () {
 //            return this.remote
 //                .get(require.toUrl('src/sample/index.html'))
