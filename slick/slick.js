@@ -477,26 +477,35 @@
     };
 
     Slick.prototype.buildDots = function() {
-
-        var _ = this,
-            i, dot;
+        var _ = this;
+        var i;
+        var dot;
+        var $slider = _.$slider[0];
 
         if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
+            $slider.classList.add('slick-dotted');
 
-            _.$slider.addClass('slick-dotted');
+            dot = document.createElement("ul");
 
-            dot = $('<ul />').addClass(_.options.dotsClass);
+            dot.classList.add(_.options.dotsClass);
 
             for (i = 0; i <= _.getDotCount(); i += 1) {
-                dot.append($('<li />').append(_.options.customPaging.call(this, _, i)));
+                dot.insertAdjacentHTML('beforeend', '<li></li>');
             }
 
-            _.$dots = dot.appendTo(_.options.appendDots);
+            for (i = 0; i <= _.getDotCount(); i += 1) {
+                dot.children[i].appendChild(_.options.customPaging.call(this, _, i)[0]);
+            }
 
-            _.$dots.find('li').first().addClass('slick-active').attr('aria-hidden', 'false');
+            _.$dots = _.options.appendDots[0].appendChild(dot);
 
+            if(_.$dots.firstElementChild.nodeName === 'LI') {
+                _.$dots.firstElementChild.classList.add('slick-active');
+                _.$dots.firstElementChild.setAttribute('aria-hidden', 'false');
+            }
+
+            _.$dots = $(_.$dots);
         }
-
     };
 
     Slick.prototype.buildOut = function() {
@@ -684,8 +693,6 @@
         var indexOffset;
         var slideOffset;
         var unevenOffset;
-
-        //console.log(event);
 
         // If target is a link, prevent default action.
         if(_.matches($target,'a')) {
