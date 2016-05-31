@@ -680,7 +680,7 @@
     Slick.prototype.changeSlide = function(event, dontAnimate) {
 
         var _ = this;
-        var $target = $(event.currentTarget)[0];
+        var $target = event.currentTarget;
         var indexOffset;
         var slideOffset;
         var unevenOffset;
