@@ -477,26 +477,32 @@
     };
 
     Slick.prototype.buildDots = function() {
-
-        var _ = this,
-            i, dot;
+        var _ = this;
+        var i;
+        var dot;
+        var $slider = _.$slider[0];
 
         if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
+            $slider.classList.add('slick-dotted');
 
-            _.$slider.addClass('slick-dotted');
+            dot = document.createElement("ul");
 
-            dot = $('<ul />').addClass(_.options.dotsClass);
+            dot.classList.add(_.options.dotsClass);
 
             for (i = 0; i <= _.getDotCount(); i += 1) {
-                dot.append($('<li />').append(_.options.customPaging.call(this, _, i)));
+                dot.insertAdjacentHTML('beforeend', '<li></li>');
+                dot.children[i].appendChild(_.options.customPaging.call(this, _, i)[0]);
             }
 
-            _.$dots = dot.appendTo(_.options.appendDots);
+            _.$dots = _.options.appendDots[0].appendChild(dot);
 
-            _.$dots.find('li').first().addClass('slick-active').attr('aria-hidden', 'false');
+            if(_.$dots.firstElementChild.nodeName === 'LI') {
+                _.$dots.firstElementChild.classList.add('slick-active');
+                _.$dots.firstElementChild.setAttribute('aria-hidden', 'false');
+            }
 
+            _.$dots = $(_.$dots);
         }
-
     };
 
     Slick.prototype.buildOut = function() {
@@ -679,51 +685,56 @@
 
     Slick.prototype.changeSlide = function(event, dontAnimate) {
 
-        var _ = this,
-            $target = $(event.currentTarget),
-            indexOffset, slideOffset, unevenOffset;
+        var _ = this;
+        var $target = event.currentTarget;
+        var indexOffset;
+        var slideOffset;
+        var unevenOffset;
 
         // If target is a link, prevent default action.
-        if(_.matches($target[0],'a')) {
+        if(_.matches($target,'a')) {
             event.preventDefault();
         }
 
         // If target is not the <li> element (ie: a child), find the <li>.
-        if(!_.matches($target[0],'li')) {
-            $target = $target.closest('li');
+        if(!_.matches($target,'li')) {
+            $target = _.getClosest($target, 'li');
         }
 
         unevenOffset = (_.slideCount % _.options.slidesToScroll !== 0);
         indexOffset = unevenOffset ? 0 : (_.slideCount - _.currentSlide) % _.options.slidesToScroll;
 
         switch (event.data.message) {
+        case 'previous':
+            slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
+            if (_.slideCount > _.options.slidesToShow) {
+                _.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
+            }
+            break;
 
-            case 'previous':
-                slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
-                if (_.slideCount > _.options.slidesToShow) {
-                    _.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
-                }
-                break;
+        case 'next':
+            slideOffset = indexOffset === 0 ? _.options.slidesToScroll : indexOffset;
+            if (_.slideCount > _.options.slidesToShow) {
+                _.slideHandler(_.currentSlide + slideOffset, false, dontAnimate);
+            }
+            break;
 
-            case 'next':
-                slideOffset = indexOffset === 0 ? _.options.slidesToScroll : indexOffset;
-                if (_.slideCount > _.options.slidesToShow) {
-                    _.slideHandler(_.currentSlide + slideOffset, false, dontAnimate);
-                }
-                break;
+        case 'index':
+            var index = event.data.index === 0 ? 0 : event.data.index || [].slice.call($target.parentNode.children).indexOf($target) * _.options.slidesToScroll;
+            var customTrigger = document.createEvent('HTMLEvents');
 
-            case 'index':
-                var index = event.data.index === 0 ? 0 :
-                    event.data.index || $target.index() * _.options.slidesToScroll;
+            customTrigger.initEvent('focus', true, false);
 
-                _.slideHandler(_.checkNavigable(index), false, dontAnimate);
-                $target.children().trigger('focus');
-                break;
+            _.slideHandler(_.checkNavigable(index), false, dontAnimate);
 
-            default:
-                return;
+            [].forEach.call($target.children, function(child) {
+                child.dispatchEvent(customTrigger);
+            } );
+            break;
+
+        default:
+            return;
         }
-
     };
 
     Slick.prototype.checkNavigable = function(index) {
@@ -1306,20 +1317,29 @@
     };
 
     Slick.prototype.initArrowEvents = function() {
-
         var _ = this;
 
         if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
-            _.$prevArrow
-               .off('click.slick')
-               .on('click.slick', {
-                    message: 'previous'
-               }, _.changeSlide);
-            _.$nextArrow
-               .off('click.slick')
-               .on('click.slick', {
-                    message: 'next'
-               }, _.changeSlide);
+            var $prevArrow = _.$prevArrow[0];
+            var $nextArrow = _.$nextArrow[0];
+
+            var initPrevArrowEvent = function(thatEvt) {
+                thatEvt.data = { message:'previous' };
+
+                return _.changeSlide(thatEvt);
+            };
+
+            var initNextArrowEvent = function(thatEvt) {
+                thatEvt.data = { message:'next' };
+
+                return _.changeSlide(thatEvt);
+            };
+
+            $prevArrow.removeEventListener("click", initPrevArrowEvent, false);
+            $nextArrow.removeEventListener("click", initNextArrowEvent, false);
+
+            $prevArrow.addEventListener("click", initPrevArrowEvent, false);
+            $nextArrow.addEventListener("click", initNextArrowEvent, false);
         }
 
     };
@@ -2883,10 +2903,10 @@
 
     };
 
-    // @param {Object} out
-    // @return {Object} out
+    // @param {Object} `out`
+    // @return {Object} `out`
     // @usage Slick.extend({}, objA, objB);
-    // Equivalent to $.extend
+    // Equivalent to jQuery.extend()
     Slick.prototype.extend = function(out) {
         out = out || {};
 
@@ -2905,11 +2925,11 @@
         return out;
     };
 
-    // @param  {Node} el The base element
-    // @param  {String} selector The class, id, data attribute, or tag to look for
+    // @param  {Node} `el` The base element
+    // @param  {String} `selector` The class, id, data attribute, or tag to look for
     // @return {Boolean} true || false
     // @usage Slick.matches(el, '.my-class');
-    // Equivalent to jQuery .is() method
+    // Equivalent to jQuery.is() method
     Slick.prototype.matches = function(el, selector) {
         return (el.matches
                 || el.matchesSelector
@@ -2920,6 +2940,45 @@
             .call(el, selector);
     };
 
+    // @param  {Node} `el` The base element
+    // @param  {String} `selector` The class, id, data attribute, or tag to look for
+    // @return {Node} HTMLElement from the `selector` param || {Boolean} false
+    // @usage Slick.getClosest(el, '.my-selector');
+    // Equivalent to jQuery.closest() method
+    Slick.prototype.getClosest = function(el, selector) {
+        var firstChar = selector.charAt(0);
+
+        // Get closest match
+        for (; el && el !== document; el = el.parentNode) {
+            // If selector is a class
+            if (firstChar === '.') {
+                if (el.classList.contains(selector.substr(1))) {
+                    return el;
+                }
+            }
+
+            // If selector is an ID
+            if (firstChar === '#') {
+                if (el.id === selector.substr(1)) {
+                    return el;
+                }
+            }
+
+            // If selector is a data attribute
+            if (firstChar === '[') {
+                if (el.hasAttribute( selector.substr(1, selector.length - 2) )) {
+                    return el;
+                }
+            }
+
+            // If selector is a tag
+            if (el.tagName.toLowerCase() === selector) {
+                return el;
+            }
+        }
+
+        return false;
+    };
 
     $.fn.slick = function() {
         var _ = this,
