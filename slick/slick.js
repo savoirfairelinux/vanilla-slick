@@ -459,7 +459,6 @@
                 });
 
                 if (_.htmlExpr.test(_.options.prevArrow)) {
-                    console.log(_.options.appendArrows[0]);
                     _.options.appendArrows[0].insertBefore($prevArrow, _.options.appendArrows[0].firstChild);
                 }
 
