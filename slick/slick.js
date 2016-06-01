@@ -491,9 +491,6 @@
 
             for (i = 0; i <= _.getDotCount(); i += 1) {
                 dot.insertAdjacentHTML('beforeend', '<li></li>');
-            }
-
-            for (i = 0; i <= _.getDotCount(); i += 1) {
                 dot.children[i].appendChild(_.options.customPaging.call(this, _, i)[0]);
             }
 
