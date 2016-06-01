@@ -459,7 +459,8 @@
                 });
 
                 if (_.htmlExpr.test(_.options.prevArrow)) {
-                    _.options.appendArrows[0].insertBefore($prevArrow, parent.firstChild);
+                    console.log(_.options.appendArrows[0]);
+                    _.options.appendArrows[0].insertBefore($prevArrow, _.options.appendArrows[0].firstChild);
                 }
 
                 if (_.htmlExpr.test(_.options.nextArrow)) {
