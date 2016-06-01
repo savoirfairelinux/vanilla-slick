@@ -5,33 +5,14 @@ define(function (require) {
     registerSuite({
         name: 'simple',
 
-        'simple-item-goto-2': function () {
-            return this.remote
-                .get(require.toUrl('src/sample/index.html'))
-                .setFindTimeout(5000)
-                .findById('single-item')
-                .findByCssSelector('[aria-controls="navigation01"]')
-                	.click()
-                	.end()
-                .findById('single-item')
-                .findByClassName('slick-current')
-                	.getVisibleText()
-	                .then(function (text) {
-	                    assert.strictEqual('2', text,
-	                        'The second slide should be active');
-	                });
-        },
-
         'simple-item-goto-5': function () {
             return this.remote
                 .get(require.toUrl('src/sample/index.html'))
                 .setFindTimeout(5000)
-                .findById('single-item')
-                .findByCssSelector('[aria-controls="navigation04"]')
+                .findByCssSelector('#single-item [aria-controls="navigation04"]')
                     .click()
                     .end()
-                .findById('single-item')
-                .findByClassName('slick-current')
+                .findByCssSelector('#single-item .slick-current')
                     .sleep(300)
                     .getVisibleText()
                     .then(function (text) {
@@ -44,12 +25,10 @@ define(function (require) {
             return this.remote
                 .get(require.toUrl('src/sample/index.html'))
                 .setFindTimeout(5000)
-                .findById('single-item')
-                .findByCssSelector('.slick-prev.slick-arrow')
+                .findByCssSelector('#single-item .slick-prev.slick-arrow')
                     .click()
                     .end()
-                .findById('single-item')
-                .findByClassName('slick-current')
+                .findByCssSelector('#single-item .slick-current')
                     .sleep(300)
                     .getVisibleText()
                     .then(function (text) {
@@ -58,16 +37,39 @@ define(function (require) {
                     });
         },
 
-        // 'adaptive height': function () {
-        //     return this.remote
-        //         .get(require.toUrl('src/sample/index.html'))
-        //         .setFindTimeout(5000)
-        //         .findById('adaptiveHeight')
-        //         .findByCssSelector('.slick-next.slick-arrow')
-        //             .click()
-        //             .end()
-        //         .findById('adaptiveHeight')
-        // },
+        'adaptive height': function () {
+            var initialHeight = 0;
+            return this.remote
+                .get(require.toUrl('src/sample/index.html'))
+                .setFindTimeout(5000)
+                .findByCssSelector('#adaptiveHeight .slick-list')
+                .getSize()
+                .then(function(sizeObj) {
+                    initialHeight = sizeObj.height;
+                })
+                .end()
+                .findByCssSelector('#adaptiveHeight .slick-next.slick-arrow')
+                    .click()
+                    .end()
+                .sleep(300)
+                .findByCssSelector('#adaptiveHeight .slick-list')
+                .getSize()
+                .then(function(sizeObj) {
+                    assert.notEqual(initialHeight, sizeObj.height,
+                        'The slick-list height should be diffrent');
+                })
+                .end()
+                .findByCssSelector('#adaptiveHeight .slick-prev.slick-arrow')
+                    .click()
+                    .end()
+                .sleep(300)
+                .findByCssSelector('#adaptiveHeight .slick-list')
+                .getSize()
+                .then(function(sizeObj) {
+                    assert.equal(initialHeight, sizeObj.height,
+                        'The slick-list height should be the same');
+                });
+        },
 
 
 
