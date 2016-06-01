@@ -433,47 +433,53 @@
     };
 
     Slick.prototype.buildArrows = function() {
-
         var _ = this;
 
         if (_.options.arrows === true ) {
+            var $prevArrow;
+            var $nextArrow;
 
-            _.$prevArrow = $(_.options.prevArrow).addClass('slick-arrow');
-            _.$nextArrow = $(_.options.nextArrow).addClass('slick-arrow');
+            _.$prevArrow = $(_.options.prevArrow);
+            _.$nextArrow = $(_.options.nextArrow);
+
+            // New set of vars to prevent conflict with other funcitons
+            // To be replace eventually
+            $prevArrow = _.$prevArrow[0];
+            $nextArrow = _.$nextArrow[0];
+
+            [].forEach.call([$prevArrow, $nextArrow], function(arrow) {
+                arrow.classList.add('slick-arrow');
+            });
 
             if( _.slideCount > _.options.slidesToShow ) {
 
-                _.$prevArrow.removeClass('slick-hidden').removeAttr('aria-hidden tabindex');
-                _.$nextArrow.removeClass('slick-hidden').removeAttr('aria-hidden tabindex');
+                [].forEach.call([$prevArrow, $nextArrow], function(arrow) {
+                    arrow.classList.remove('slick-hidden');
+                    arrow.removeAttribute('aria-hidden tabindex');
+                });
 
                 if (_.htmlExpr.test(_.options.prevArrow)) {
-                    _.$prevArrow.prependTo(_.options.appendArrows);
+                    _.options.appendArrows[0].insertBefore($prevArrow, _.options.appendArrows[0].firstChild);
                 }
 
                 if (_.htmlExpr.test(_.options.nextArrow)) {
-                    _.$nextArrow.appendTo(_.options.appendArrows);
+                    _.options.appendArrows[0].appendChild($nextArrow);
                 }
 
                 if (_.options.infinite !== true) {
-                    _.$prevArrow
-                        .addClass('slick-disabled')
-                        .attr('aria-disabled', 'true');
+                    $prevArrow.classList.add('slick-disabled');
+                    $prevArrow.setAttribute('aria-disabled', 'true');
                 }
 
             } else {
 
-                _.$prevArrow.add( _.$nextArrow )
-
-                    .addClass('slick-hidden')
-                    .attr({
-                        'aria-disabled': 'true',
-                        'tabindex': '-1'
-                    });
-
+                [].forEach.call([$prevArrow, $nextArrow], function(arrow) {
+                    arrow.classList.add('slick-hidden');
+                    arrow.setAttribute('aria-disabled', 'true');
+                    arrow.setAttribute('tabindex', '-1');
+                });
             }
-
         }
-
     };
 
     Slick.prototype.buildDots = function() {
