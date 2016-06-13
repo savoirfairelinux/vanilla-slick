@@ -2007,20 +2007,10 @@
     Slick.prototype.setHeight = function() {
 
         var _ = this;
-        function outerHeight(el) {
-          var height = el.offsetHeight;
-          var style = getComputedStyle(el);
-
-          height += parseInt(style.marginTop) + parseInt(style.marginBottom);
-          return height;
-        }
-
 
         if (_.options.slidesToShow === 1 && _.options.adaptiveHeight === true && _.options.vertical === false) {
-            var targetHeight = outerHeight(_.$slides.get()[_.currentSlide]);
-            _.$list.get().forEach(function(elem){
-                elem.style.height = targetHeight;
-            });
+            var targetHeight = _.outerHeight(_.$slides.get()[_.currentSlide]);
+            _.$list[0].style.height = targetHeight + "px";
         }
 
     };
@@ -2984,6 +2974,17 @@
         }
 
         return false;
+    };
+
+    // @param  {Node} `el` The base element
+    // @return {Number} The outerHeight of the `el` element.
+    // @usage Slick.outerHeight(el);
+    Slick.prototype.outerHeight = function(el) {
+        var height = el.offsetHeight,
+            style = getComputedStyle(el);
+
+        height += parseInt(style.marginTop) + parseInt(style.marginBottom);
+        return height;
     };
 
     $.fn.slick = function() {
