@@ -29,14 +29,14 @@ define({
 
 	// Maximum number of simultaneous integration tests that should be executed on the remote WebDriver service
 	maxConcurrency: 2,
-	
+
 	proxyPort: 9090,
 	proxyUrl: "http://localhost:9090",
 	// Name of the tunnel class to use for WebDriver tests.
 	// See <https://theintern.github.io/intern/#option-tunnel> for built-in options
 	//tunnel: 'BrowserStackTunnel',
 	tunnel: 'NullTunnel',
-	
+
 	// Configuration options for the module loader; any AMD configuration options supported by the AMD loader in use
 	// can be used here.
 	// If you want to use a different loader than the default loader, see
