@@ -9,7 +9,7 @@ _the last carousel you'll ever need_
 
 ### Tests automatisés
 
-[En ce qui concerne les tests voir TESTS.md](TESTS.md).
+En ce qui concerne les tests voir [TESTS.md](TESTS.md).
 
 ### État actuel
 
