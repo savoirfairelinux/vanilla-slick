@@ -1,12 +1,15 @@
 slick
--------
+=====
 
 [1]: <https://github.com/kenwheeler/slick>
 
 _the last carousel you'll ever need_
 
-
 ## Vanilla-slick
+
+### Tests automatisés
+
+[En ce qui concerne les tests voir TESTS.md](TESTS.md).
 
 ### État actuel
 
