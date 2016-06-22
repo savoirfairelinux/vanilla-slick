@@ -338,7 +338,7 @@
 
         if ( asNavFor && asNavFor !== null ) {
             asNavFor = [].slice.call(document.querySelectorAll(asNavFor)).filter(function(elem, index, array){
-                return !elem.isSameNode(_.$slider.get(0));
+                return elem !== _.$slider.get(0);
             });
             asNavFor = $(asNavFor);
         }
