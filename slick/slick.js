@@ -337,7 +337,10 @@
             asNavFor = _.options.asNavFor;
 
         if ( asNavFor && asNavFor !== null ) {
-            asNavFor = $(asNavFor).not(_.$slider);
+            asNavFor = [].slice.call(document.querySelectorAll(asNavFor)).filter(function(elem, index, array){
+                return !elem.isSameNode(_.$slider.get(0));
+            });
+            asNavFor = $(asNavFor);
         }
 
         return asNavFor;
