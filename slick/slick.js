@@ -1977,33 +1977,24 @@
     Slick.prototype.setFade = function() {
 
         var _ = this,
-            targetLeft;
+            targetLeft,
+            slidesArray = _.$slides.toArray();
 
-        _.$slides.each(function(index, element) {
+        slidesArray.forEach(function(element, index) {
             targetLeft = (_.slideWidth * index) * -1;
+            element.style['position'] = 'relative';
+            element.style['top'] = 0;
+            element.style['zIndex'] = _.options.zIndex - 2;
+            element.style['opacity'] = 0;
             if (_.options.rtl === true) {
-                $(element).css({
-                    position: 'relative',
-                    right: targetLeft,
-                    top: 0,
-                    zIndex: _.options.zIndex - 2,
-                    opacity: 0
-                });
+                element.style['right'] = targetLeft;
             } else {
-                $(element).css({
-                    position: 'relative',
-                    left: targetLeft,
-                    top: 0,
-                    zIndex: _.options.zIndex - 2,
-                    opacity: 0
-                });
+                element.style['left'] = targetLeft;
             }
         });
 
-        _.$slides.eq(_.currentSlide).css({
-            zIndex: _.options.zIndex - 1,
-            opacity: 1
-        });
+        slidesArray[_.currentSlide].style['zIndex'] = _.options.zIndex - 1;
+        slidesArray[_.currentSlide].style['opacity'] = 1;
 
     };
 
