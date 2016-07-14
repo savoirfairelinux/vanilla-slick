@@ -6,6 +6,12 @@ $(document).ready(function() {
         slidesToShow: 1,
         slidesToScroll: 1
     });
+
+
+    $('.single-item').slick("unslick");
+
+
+
     $('.multiple-items').slick({
         dots: true,
         infinite: true,
