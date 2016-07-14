@@ -2871,7 +2871,7 @@
 
         if (_.$dots !== null) {
 
-            var $lis = _.queryAll('li', $dots[0]),
+            var $lis = _.queryAll('li', _.$dots[0]),
                 $nextDot = $lis[Math.floor(_.currentSlide / _.options.slidesToScroll)];
 
             $lis.forEach(function($myElem) {
