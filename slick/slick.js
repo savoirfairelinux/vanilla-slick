@@ -2877,10 +2877,10 @@
 
         if (_.$dots !== null) {
 
-            var $lis = _.$dots[0].querySelectorAll('li'),
+            var $lis = _.queryAll('li', $dots[0]),
                 $nextDot = $lis[Math.floor(_.currentSlide / _.options.slidesToScroll)];
 
-            Array.prototype.forEach.call($lis, function($myElem) {
+            lis.forEach(function($myElem) {
                 $myElem.classList.remove('slick-active');
                 $myElem.setAttribute('aria-hidden', 'true');
             });
