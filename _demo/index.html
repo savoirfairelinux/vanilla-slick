@@ -1,0 +1,396 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+
+        <title>Vanilla Slick - the last carousel you'll ever need</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+	    <link rel="stylesheet" type="text/css" href="../slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="../slick/slick-theme.css"/>
+	    <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <main>
+            <section id="features" class="blue">                
+			    <div class="content">
+				    <h2>Features</h2>
+				    <ul class="features">
+					    <li>Fully responsive. Scales with its container.</li>
+					    <li>Separate settings per breakpoint</li>
+					    <li>Uses CSS3 when available. Fully functional when not.</li>
+					    <li>Swipe enabled. Or disabled, if you prefer.</li>
+					    <li>Desktop mouse dragging</li>
+					    <li>Infinite looping.</li>
+					    <li>Fully accessible with arrow key navigation</li>
+					    <li>Add, remove, filter & unfilter slides</li>
+					    <li>Autoplay, dots, arrows, callbacks, etc...</li>
+				    </ul>
+				    <hr id="demos"/>
+				    <h2>Single Item</h2>
+				    <div class="slider single-item">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+				    </div>
+				    <pre><code class="language-javascript">
+$('.single-item').slick();
+				    </code></pre>
+				    <hr/>
+				    <h2>Multiple Items</h2>
+				    <div class="slider multiple-items">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+					    <div><h3>7</h3></div>
+					    <div><h3>8</h3></div>
+					    <div><h3>9</h3></div>
+				    </div>
+				    <pre><code class="language-javascript">
+$('.multiple-items').slick({
+  infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 3
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Responsive Display</h2>
+				    <div class="slider responsive">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+					    <div><h3>7</h3></div>
+					    <div><h3>8</h3></div>
+				    </div>
+				    <pre><code class="language-javascript">
+$('.responsive').slick({
+  dots: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+});
+				    </code></pre>
+				    <hr/>
+                    <h2>Variable Width</h2>
+                    <div class="slider variable-width">
+                        <div style="width: 200px;"><p>200</p></div>
+                        <div style="width: 175px;"><p>175</p></div>
+                        <div style="width: 150px;"><p>150</p></div>
+                        <div style="width: 300px;"><p>300</p></div>
+                        <div style="width: 225px;"><p>225</p></div>
+                        <div style="width: 125px;"><p>125</p></div>
+
+                    </div>
+                    <pre><code class="language-javascript">
+$('.variable-width').slick({
+  dots: true,
+  infinite: true,
+  speed: 300,
+  slidesToShow: 1,
+  centerMode: true,
+  variableWidth: true
+});
+                    </code></pre>
+                    <hr/>
+				    <h2>Adaptive Height</h2>
+				    <div class="slider one-time">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3><p>Look ma!</p></div>
+					    <div><h3>3</h3><p>Check<br/>this out!</p></div>
+					    <div><h3>4</h3><p>Woo!</p></div>
+				    </div>
+				    <pre><code class="language-javascript">
+$('.one-time').slick({
+  dots: true,
+  infinite: true,
+  speed: 300,
+  slidesToShow: 1,
+  adaptiveHeight: true
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Data Attribute Settings</h2>
+                    <p>In slick 1.5 you can now add settings using the data-slick attribute. You still need to call $(element).slick() to initialize slick on the element.</p>
+				    <div class="data" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+				    </div>
+				    <pre><code class="language-markup">
+&lt;div data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'&gt;
+  &lt;div&gt;&lt;h3&gt;1&lt;/h3&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;h3&gt;2&lt;/h3&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;h3&gt;3&lt;/h3&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;h3&gt;4&lt;/h3&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;h3&gt;5&lt;/h3&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;h3&gt;6&lt;/h3&gt;&lt;/div&gt;
+&lt;/div&gt;
+				    </code></pre>
+				    <hr/>
+				    <h2>Center Mode</h2>
+				    <div class="slider center">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+				    </div>
+				    <pre><code class="language-javascript">
+$('.center').slick({
+  centerMode: true,
+  centerPadding: '60px',
+  slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 768,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 3
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }
+  ]
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Lazy Loading</h2>
+				    <div class="slider lazy">
+					    <div><div class="image"><img data-lazy="lazyfonz1.png"/></div></div>
+					    <div><div class="image"><img data-lazy="lazyfonz2.png"/></div></div>
+					    <div><div class="image"><img data-lazy="lazyfonz3.png"/></div></div>
+					    <div><div class="image"><img data-lazy="lazyfonz4.png"/></div></div>
+					    <div><div class="image"><img data-lazy="lazyfonz5.png"/></div></div>
+					    <div><div class="image"><img data-lazy="lazyfonz6.png"/></div></div>
+				    </div>
+				    <pre><code class="language-javascript">
+// To use lazy loading, set a data-lazy attribute
+// on your img tags and leave off the src
+
+&lt;img data-lazy="lazyfonz1.png"/&gt;
+
+$('.lazy').slick({
+  lazyLoad: 'ondemand',
+  slidesToShow: 3,
+  slidesToScroll: 1
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Autoplay</h2>
+				    <div class="slider autoplay">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+				    </div>
+			        <pre><code class="language-javascript">
+$('.autoplay').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Fade</h2>
+				    <div class="slider fade">
+					    <div><div class="image"><img src="fonz1.png"/></div></div>
+					    <div><div class="image"><img src="fonz2.png"/></div></div>
+					    <div><div class="image"><img src="fonz3.png"/></div></div>
+				    </div>
+			        <pre><code class="language-javascript">
+$('.fade').slick({
+  dots: true,
+  infinite: true,
+  speed: 500,
+  fade: true,
+  cssEase: 'linear'
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Add & Remove</h2>
+				    <div class="slider add-remove">
+					    <div><h3>1</h3></div>
+				    </div>
+				    <div class="buttons">
+					    <a href="javascript:void(0)" class="button js-add-slide">Add Slide</a>
+					    <a href="javascript:void(0)" class="button js-remove-slide">Remove Slide</a>
+				    </div>
+			        <pre><code class="language-javascript">
+$('.add-remove').slick({
+  slidesToShow: 3,
+  slidesToScroll: 3
+});
+$('.js-add-slide').on('click', function() {
+  slideIndex++;
+  $('.add-remove').slick('slickAdd','&lt;div&gt;&lt;h3&gt;' + slideIndex + '&lt;/h3&gt;&lt;/div&gt;');
+});
+
+$('.js-remove-slide').on('click', function() {
+  $('.add-remove').slick('slickRemove',slideIndex - 1);
+  if (slideIndex !== 0){
+    slideIndex--;
+  }
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Filtering</h2>
+				    <div class="slider filtering">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+					    <div><h3>7</h3></div>
+					    <div><h3>8</h3></div>
+					    <div><h3>9</h3></div>
+					    <div><h3>10</h3></div>
+					    <div><h3>11</h3></div>
+					    <div><h3>12</h3></div>
+				    </div>
+				    <div class="filter">
+					    <a href="javascript:void(0)" class="button js-filter">Filter Slides</a>
+				    </div>
+			        <pre><code class="language-javascript">
+$('.filtering').slick({
+  slidesToShow: 4,
+  slidesToScroll: 4
+});
+
+var filtered = false;
+
+$('.js-filter').on('click', function(){
+  if (filtered === false) {
+    $('.filtering').slick('slickFilter',':even');
+    $(this).text('Unfilter Slides');
+    filtered = true;
+  } else {
+    $('.filtering').slick('slickUnfilter');
+    $(this).text('Filter Slides');
+    filtered = false;
+  }
+});
+				    </code></pre>
+				    <hr/>
+				    <h2>Destroy</h2>
+				    <p class="destroy">If you really want to be that guy...</p>
+				    <pre><code class="language-javascript">
+$('.your-slider').slick('unslick');
+				    </code></pre>
+				    <hr/>
+				    <h2>Slider Syncing</h2>
+				    <div class="slider slider-for">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+				    </div>
+				    <div class="slider slider-nav">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					</div>
+				    <pre><code class="language-javascript">
+ $('.slider-for').slick({
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: false,
+  fade: true,
+  asNavFor: '.slider-nav'
+});
+$('.slider-nav').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  asNavFor: '.slider-for',
+  dots: true,
+  centerMode: true,
+  focusOnSelect: true
+});
+				    </code></pre>
+				    <hr />
+				    <h2>Right to Left</h2>
+				    <div dir="rtl" class="slider single-item-rtl">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+				    </div>
+				    <pre><code class="language-javascript">
+$('.single-item-rtl').slick({
+  rtl: true
+});
+				    </code></pre>
+
+				    <p><strong>Note:</strong> the HTML tag or the parent of the slider must have the attribute "dir" set to "rtl".</p>
+				    <hr />
+				    <h4 class="more">and a whole lot more...</h4>
+				</div>
+		    </section>
+        </main>
+
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script src="../slick/slick.js"></script>
+		<script src="scripts.js"></script>
+    </body>
+</html>
