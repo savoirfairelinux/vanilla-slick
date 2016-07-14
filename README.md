@@ -3,7 +3,7 @@ Vanilla Slick
 
 [1]: <https://github.com/kenwheeler/slick>
 
-_The not ready yet, plain JavaScript version of the last carousel you'll ever need! But not ready yet_
+_The not ready yet, plain JavaScript version of the last carousel you'll ever need!_
 
 ## Vanilla-slick
 
