@@ -2200,11 +2200,11 @@
         var _ = this,
             centerOffset, allSlides, indexOffset, remainder, _slidesToShow;
         var _slider = _.$slider.get()[0],
-            _slides = _.$slides.get();
+            _slides = _.$slides.toArray();
 
-        allSlides = _slider.querySelectorAll('.slick-slide');
+        allSlides = _.querySelectorAll('.slick-slide', _slider);
 
-        Array.prototype.forEach.call(allSlides, function($myElem) {
+        allSlides.forEach(function($myElem) {
             $myElem.classList.remove('slick-active');
             $myElem.classList.remove('slick-center');
             $myElem.classList.remove('slick-current');
@@ -2224,7 +2224,7 @@
                 if (index >= centerOffset && index <= (_.slideCount - 1) - centerOffset) {
 
                     _slidesToShow = _slides.slice(index - centerOffset, index + centerOffset + 1);
-                    Array.prototype.forEach.call(_slidesToShow, function($myElem) {
+                    _slidesToShow.forEach(function($myElem) {
                         $myElem.classList.add('slick-active');
                         $myElem.setAttribute('aria-hidden', 'false');
                     });
@@ -2234,7 +2234,7 @@
                     indexOffset = _.options.slidesToShow + index;
 
                     _slidesToShow = _slides.slice(indexOffset - centerOffset + 1, indexOffset + centerOffset + 2);
-                    Array.prototype.forEach.call(_slidesToShow, function($myElem) {
+                    _slidesToShow.forEach(function($myElem) {
                         $myElem.classList.add('slick-active');
                         $myElem.setAttribute('aria-hidden', 'false');
                     });
@@ -2264,14 +2264,14 @@
             if (index >= 0 && index <= (_.slideCount - _.options.slidesToShow)) {
 
                 _slidesToShow = _slides.slice(index, index + _.options.slidesToShow);
-                Array.prototype.forEach.call(_slidesToShow, function($myElem) {
+                _slidesToShow.forEach(function($myElem) {
                     $myElem.classList.add('slick-active');
                     $myElem.setAttribute('aria-hidden', 'false');
                 });
 
             } else if (allSlides.length <= _.options.slidesToShow) {
 
-                Array.prototype.forEach.call(allSlides, function($myElem) {
+                allSlides.forEach(function($myElem) {
                     $myElem.classList.add('slick-active');
                     $myElem.setAttribute('aria-hidden', 'false');
                 });
@@ -2283,18 +2283,18 @@
 
                 if (_.options.slidesToShow == _.options.slidesToScroll && (_.slideCount - index) < _.options.slidesToShow) {
 
-                    _slidesToShow = Array.prototype.slice.call(allSlides, indexOffset - (_.options.slidesToShow - remainder), indexOffset + remainder);
+                    _slidesToShow = allSlides.slice(indexOffset - (_.options.slidesToShow - remainder), indexOffset + remainder);
 
-                    Array.prototype.forEach.call(_slidesToShow, function($myElem) {
+                    _slidesToShow.forEach(function($myElem) {
                         $myElem.classList.add('slick-active');
                         $myElem.setAttribute('aria-hidden', 'false');
                     });
 
                 } else {
 
-                    _slidesToShow = Array.prototype.slice.call(indexOffset, indexOffset + _.options.slidesToShow);
+                    _slidesToShow = allSlides.slice(indexOffset, indexOffset + _.options.slidesToShow);
 
-                    Array.prototype.forEach.call(_slidesToShow, function($myElem) {
+                    _slidesToShow.forEach(function($myElem) {
                         $myElem.classList.add('slick-active');
                         $myElem.setAttribute('aria-hidden', 'false');
                     });
@@ -2999,6 +2999,16 @@
         height += parseInt(style.marginTop) + parseInt(style.marginBottom);
         return height;
     };
+
+    //next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
+    Slick.prototype.querySelector = function (expr, container) {
+        return typeof expr === "string"? (container || document).querySelector(expr) : expr || null;
+    }
+
+    //next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
+    Slick.prototype.querySelectorAll = function (expr, container) {
+        return Array.prototype.slice.call((container || document).querySelectorAll(expr));
+    }
 
     $.fn.slick = function() {
         var _ = this,
