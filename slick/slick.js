@@ -2202,7 +2202,7 @@
         var _slider = _.$slider.get()[0],
             _slides = _.$slides.toArray();
 
-        allSlides = _.querySelectorAll('.slick-slide', _slider);
+        allSlides = _.queryAll('.slick-slide', _slider);
 
         allSlides.forEach(function($myElem) {
             $myElem.classList.remove('slick-active');
@@ -3001,12 +3001,7 @@
     };
 
     //next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
-    Slick.prototype.querySelector = function (expr, container) {
-        return typeof expr === "string"? (container || document).querySelector(expr) : expr || null;
-    }
-
-    //next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
-    Slick.prototype.querySelectorAll = function (expr, container) {
+    Slick.prototype.queryAll = function (expr, container) {
         return Array.prototype.slice.call((container || document).querySelectorAll(expr));
     }
 
