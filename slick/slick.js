@@ -340,7 +340,7 @@
             asNavFor = _.options.asNavFor;
 
         if ( asNavFor && asNavFor !== null ) {
-            asNavFor = [].slice.call(document.querySelectorAll(asNavFor)).filter(function(elem, index, array){
+            asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
                 return elem !== _.$slider.get(0);
             });
             asNavFor = $(asNavFor);
