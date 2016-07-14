@@ -602,11 +602,16 @@
     };
 
     Slick.prototype.checkResponsive = function(initial, forceUpdate) {
-
         var _ = this,
             breakpoint, targetBreakpoint, respondToWidth, triggerBreakpoint = false;
-        var sliderWidth = _.$slider.width();
-        var windowWidth = window.innerWidth || $(window).width();
+		var _slider = _.$slider.get(); //for vanilla
+        var sliderWidth = _slider.innerWidth;
+        var windowWidth = window.innerWidth;// || $(window).width();
+
+		//console.log('_.$slider.trigger', _.$slider.trigger);
+		//console.log('_slider.trigger', _slider.trigger);
+		//console.log('_slider', _slider);
+		console.log('trigger', _.$slider.trigger('breakpoint', [_, triggerBreakpoint]));
 
         if (_.respondTo === 'window') {
             respondToWidth = windowWidth;
@@ -2986,6 +2991,25 @@
         height += parseInt(style.marginTop) + parseInt(style.marginBottom);
         return height;
     };
+
+	Slick.prototype.triggerEvent = function(el, type) {
+		var e;
+
+	    if ('createEvent' in document) {
+	        // modern browsers, IE9+
+	        e = document.createEvent('HTMLEvents');
+
+	        e.initEvent(type, true, false);
+	        el.dispatchEvent(e);
+            //console.log(e);
+	    } else {
+	        // IE 8
+	        e = document.createEventObject();
+
+	        e.eventType = type;
+	        el.fireEvent('on'+e.eventType, e);
+	    }
+	}
 
     $.fn.slick = function() {
         var _ = this,
