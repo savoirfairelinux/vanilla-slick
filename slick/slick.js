@@ -1937,40 +1937,43 @@
 
     Slick.prototype.setDimensions = function() {
 
-        var _ = this;
+        var _ = this,
+            list = _.$list.get(0),
+            slides = _.$slides.get(),
+            slideTrack = _.$slideTrack.get(0);
 
         if (_.options.vertical === false) {
             if (_.options.centerMode === true) {
-                _.$list.css({
-                    padding: ('0px ' + _.options.centerPadding)
-                });
+                list.style['padding'] = '0px ' + _.options.centerPadding;
             }
         } else {
-            _.$list.height(_.$slides.first().outerHeight(true) * _.options.slidesToShow);
+            _.$list.style['height'] = _.outerHeight(slides[0]) * _.options.slidesToShow + 'px';
             if (_.options.centerMode === true) {
-                _.$list.css({
-                    padding: (_.options.centerPadding + ' 0px')
-                });
+                list.style['padding'] = (_.options.centerPadding + ' 0px');
             }
         }
 
-        _.listWidth = _.$list.width();
-        _.listHeight = _.$list.height();
+        _.listWidth = _.width(list);
+        _.listHeight = _.height(list);
 
 
         if (_.options.vertical === false && _.options.variableWidth === false) {
             _.slideWidth = Math.ceil(_.listWidth / _.options.slidesToShow);
-            _.$slideTrack.width(Math.ceil((_.slideWidth * _.$slideTrack.children('.slick-slide').length)));
+            slideTrack.style['width'] = Math.ceil(_.slideWidth * slideTrack.getElementsByClassName('slick-slide').length) + 'px';
 
         } else if (_.options.variableWidth === true) {
-            _.$slideTrack.width(5000 * _.slideCount);
+            slideTrack.style['width'] = 5000 * _.slideCount + 'px';
         } else {
             _.slideWidth = Math.ceil(_.listWidth);
-            _.$slideTrack.height(Math.ceil((_.$slides.first().outerHeight(true) * _.$slideTrack.children('.slick-slide').length)));
+            slideTrack.style['height'] = Math.ceil(_.outerHeight(slides[0]) * slideTrack.getElementsByClassName('slick-slide').length) + 'px';
         }
 
-        var offset = _.$slides.first().outerWidth(true) - _.$slides.first().width();
-        if (_.options.variableWidth === false) _.$slideTrack.children('.slick-slide').width(_.slideWidth - offset);
+        var offset = _.outerWidth(slides[0]) - _.width(slides[0]);
+        if (_.options.variableWidth === false) {
+            Array.prototype.forEach.call(slideTrack.getElementsByClassName('slick-slide'), function(element) {
+                element.style['width'] = _.slideWidth - offset + 'px';
+            });
+        }
 
     };
 
@@ -2980,13 +2983,46 @@
     };
 
     // @param  {Node} `el` The base element
-    // @return {Number} The outerHeight of the `el` element.
+    // @return {Number} The outerHeight(true) of the `el` element.
     // @usage Slick.outerHeight(el);
     Slick.prototype.outerHeight = function(el) {
         var height = el.offsetHeight,
             style = getComputedStyle(el);
 
         height += parseInt(style.marginTop) + parseInt(style.marginBottom);
+        return height;
+    };
+
+    // @param  {Node} `el` The base element
+    // @return {Number} The outerWidth(true) of the `el` element.
+    // @usage Slick.outerWidth(el);
+    Slick.prototype.outerWidth = function(el) {
+        var width = el.offsetWidth,
+            style = getComputedStyle(el);
+
+        width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+        return width;
+    };
+
+    // @param  {Node} `el` The base element
+    // @return {Number} The width() of the `el` element.
+    // @usage Slick.width(el);
+    Slick.prototype.width = function(el) {
+        var width = el.offsetWidth,
+            style = getComputedStyle(el);
+
+        width -= (parseInt(style.paddingLeft) + parseInt(style.paddingRight) + parseInt(style.borderLeft) + parseInt(style.borderRight));
+        return width;
+    };
+
+    // @param  {Node} `el` The base element
+    // @return {Number} The height() of the `el` element.
+    // @usage Slick.height(el);
+    Slick.prototype.height = function(el) {
+        var height = el.offsetWidth,
+            style = getComputedStyle(el);
+
+        height -= (parseInt(style.paddingTop) + parseInt(style.paddingBottom) + parseInt(style.borderTop) + parseInt(style.borderBottom));
         return height;
     };
 
