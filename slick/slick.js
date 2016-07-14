@@ -243,11 +243,14 @@
 
 	Slick.prototype.animateHeight = function() {
 		var _ = this;
+
 		if (_.options.slidesToShow === 1 && _.options.adaptiveHeight === true && _.options.vertical === false) {
-			var targetHeight = _.$slides.eq(_.currentSlide).outerHeight(true);
-			_.$list.animate({
-				height: targetHeight
-			}, _.options.speed);
+            var _slides = _.$slides.get();
+            var _list = _.$list.get(0);
+            var targetHeight = _.outerHeight(_slides[_.currentSlide]);
+
+            _list.style.height = targetHeight + 'px';
+            _list.style.transition = 'height ' + _.options.speed + 'ms';
 		}
 	};
 
