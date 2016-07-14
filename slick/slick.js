@@ -604,14 +604,14 @@
     Slick.prototype.checkResponsive = function(initial, forceUpdate) {
         var _ = this,
             breakpoint, targetBreakpoint, respondToWidth, triggerBreakpoint = false;
-		var _slider = _.$slider.get(); //for vanilla
+		var _slider = _.$slider.get(0); //for vanilla
         var sliderWidth = _slider.innerWidth;
         var windowWidth = window.innerWidth;// || $(window).width();
 
 		//console.log('_.$slider.trigger', _.$slider.trigger);
 		//console.log('_slider.trigger', _slider.trigger);
 		//console.log('_slider', _slider);
-		console.log('trigger', _.$slider.trigger('breakpoint', [_, triggerBreakpoint]));
+		//console.log('trigger', _.$slider.trigger('breakpoint', [_, triggerBreakpoint]));
 
         if (_.respondTo === 'window') {
             respondToWidth = windowWidth;
@@ -640,7 +640,6 @@
                     }
                 }
             }
-
             if (targetBreakpoint !== null) {
                 if (_.activeBreakpoint !== null) {
                     if (targetBreakpoint !== _.activeBreakpoint || forceUpdate) {
@@ -689,6 +688,7 @@
             // only trigger breakpoints during an actual break. not on initialize.
             if( !initial && triggerBreakpoint !== false ) {
                 _.$slider.trigger('breakpoint', [_, triggerBreakpoint]);
+                console.log('trigger', _.$slider.trigger('breakpoint', [_, triggerBreakpoint]));
             }
         }
 
