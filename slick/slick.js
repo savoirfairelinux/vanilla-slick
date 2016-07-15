@@ -187,12 +187,16 @@
 
     Slick.prototype.activateADA = function() {
         var _ = this;
-
-        _.$slideTrack.find('.slick-active').attr({
-            'aria-hidden': 'false'
-        }).find('a, input, button, select').attr({
-            'tabindex': '0'
-        });
+        
+        // TODO remove this line once $slideTrack is no longer a jquery object
+        var _slideTrack = _.$slideTrack.get(0); // assuming there is only one track
+        
+    	Array.from(_slideTrack.querySelectorAll('.slick-active')).forEach(function(element, index, array){
+    		element.setAttribute('aria-hidden', 'false');
+    		Array.from(element.querySelectorAll('a, input, button, select')).forEach(function(element2, index2, array2){
+    			element2.setAttribute('tabindex', '0');
+    		});
+    	});
 
     };
 
