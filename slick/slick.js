@@ -2787,12 +2787,21 @@ Issues: http://github.com/kenwheeler/slick/issues
 		var _ = this;
 
 		if (_.$slidesCache !== null) {
+			var _slidesCache = _.$slidesCache.get(),
+				_slideTrack = _.$slideTrack.get(0)
 
 			_.unload();
 
-			_.$slideTrack.children(this.options.slide).detach();
+			var slidesToDetach = Array.prototype.slice.call(_slideTrack.children);
 
-			_.$slidesCache.appendTo(_.$slideTrack);
+			if (this.options.slide) {
+				var allChildrens = _.queryAll(this.options.slide, _slideTrack);
+				slidesToDetach = slidesToDetach.filter(function(e) { return allChildrens.lastIndexOf(e) >= 0; });
+			}
+
+			slidesToDetach.forEach(function(elem) { _slideTrack.removeChild(elem); });
+
+			_slideTrack.innerHTML = _slidesCache.map(function(e) { return e.outerHTML}).join('');
 
 			_.reinit();
 
