@@ -1,10 +1,10 @@
 /*
-	_ _      _       _
+     _ _      _       _
 ___| (_) ___| | __  (_)___
 / __| | |/ __| |/ /  | / __|
 \__ \ | | (__|   < _ | \__ \
 |___/_|_|\___|_|\_(_)/ |___/
-				|__/
+                   |__/
 
 Version: 1.5.9
 Author: Ken Wheeler
@@ -844,9 +844,11 @@ Issues: http://github.com/kenwheeler/slick/issues
 		var _ = this, originalSlides;
 
 		if(_.options.rows > 1) {
-			originalSlides = _.$slides.children().children();
-			originalSlides.removeAttr('style');
-			_.$slider.empty().append(originalSlides);
+			originalSlides = _.$slides.children.children;
+			originalSlides.removeAttribute('style');
+			_.$slider.innerHTML = '';
+			_.$slider.appendChild(originalSlides);
+
 		}
 
 	};
