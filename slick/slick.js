@@ -239,6 +239,12 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		_.reinit();
 
+		if ( asNavFor && asNavFor !== null ) {
+			asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
+				return elem !== _.$slider.get(0);
+			});
+			asNavFor = $(asNavFor);
+		}
 	};
 
 	Slick.prototype.animateHeight = function() {
@@ -340,12 +346,17 @@ Issues: http://github.com/kenwheeler/slick/issues
 			asNavFor = _.options.asNavFor;
 
 		if ( asNavFor && asNavFor !== null ) {
-			asNavFor = $(asNavFor).not(_.$slider);
+			asNavFor = [].slice.call(document.querySelectorAll(asNavFor)).filter(function(elem, index, array){
+				return !elem.isSameNode(_.$slider.get(0));
+			});
+			asNavFor = $(asNavFor);
 		}
 
 		return asNavFor;
-
 	};
+        return asNavFor;
+
+    };
 
 	Slick.prototype.asNavFor = function(index) {
 
@@ -2894,6 +2905,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 			$nextDot.classList.add('slick-active');
 			$nextDot.setAttribute('aria-hidden', 'false');
 
+			var $lis = _.queryAll('li', _.$dots[0]),
+				$nextDot = $lis[Math.floor(_.currentSlide / _.options.slidesToScroll)];
 		}
 
 	};
