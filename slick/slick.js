@@ -1463,7 +1463,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.keyHandler = function(event) {
 
 		var _ = this;
-		 //Dont slide if the cursor is inside the form fields and arrow keys are pressed
+		//Dont slide if the cursor is inside the form fields and arrow keys are pressed
 		if(!event.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
 			if (event.keyCode === 37 && _.options.accessibility === true) {
 				_.changeSlide({

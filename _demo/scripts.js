@@ -6,12 +6,6 @@ $(document).ready(function() {
         slidesToShow: 1,
         slidesToScroll: 1
     });
-
-
-    $('.single-item').slick("unslick");
-
-
-
     $('.multiple-items').slick({
         dots: true,
         infinite: true,
@@ -186,7 +180,7 @@ $(document).ready(function() {
     });
 
     $('ul.nav a').on('click', function(event) {
-      if ($(this).attr('href')[0] === "#") { 
+      if ($(this).attr('href')[0] === "#") {
         event.preventDefault();
           var targetID = $(this).attr('href');
           var targetST = $(targetID).offset().top - 48;
