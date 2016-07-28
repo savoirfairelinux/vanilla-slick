@@ -8,4 +8,5 @@ before_install:
   - "java -jar selenium-server-standalone-2.53.1.jar &"
   - "export DISPLAY=:99.0"
 script:
+  - "export DISPLAY=:99.0"
   - "bash test.sh"
