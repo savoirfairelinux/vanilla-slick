@@ -1,10 +1,10 @@
 /*
-	_ _      _       _
-___| (_) ___| | __  (_)___
+	 _ _      _       _
+ ___| (_) ___| | __  (_)___
 / __| | |/ __| |/ /  | / __|
 \__ \ | | (__|   < _ | \__ \
 |___/_|_|\___|_|\_(_)/ |___/
-				|__/
+				   |__/
 
 Version: 1.5.9
 Author: Ken Wheeler
@@ -346,7 +346,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 			asNavFor = _.options.asNavFor;
 
 		if ( asNavFor && asNavFor !== null ) {
-			asNavFor = [].slice.call(document.querySelectorAll(asNavFor)).filter(function(elem, index, array){
+			asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
 				return !elem.isSameNode(_.$slider.get(0));
 			});
 			asNavFor = $(asNavFor);
