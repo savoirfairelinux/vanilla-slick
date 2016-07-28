@@ -578,43 +578,41 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	Slick.prototype.buildRows = function() {
 
-		var _ = this, a, b, c, newSlides, numOfSlides, originalSlides,slidesPerSection;
+		var _ = this, a, b, c, newSlides, numOfSlides, originalSlides, slidesPerSection;
 
 		newSlides = document.createDocumentFragment();
-		originalSlides = _.$slider.children();
+		originalSlides = _.$slider.get();
+		originalSlides = originalSlides[0].children;
+		originalSlides = [].slice.call(originalSlides);
 
 		if(_.options.rows > 1) {
-
 			slidesPerSection = _.options.slidesPerRow * _.options.rows;
-			numOfSlides = Math.ceil(
-				originalSlides.length / slidesPerSection
-			);
-
+			numOfSlides = Math.ceil(originalSlides.length / slidesPerSection);
 			for(a = 0; a < numOfSlides; a++){
 				var slide = document.createElement('div');
 				for(b = 0; b < _.options.rows; b++) {
 					var row = document.createElement('div');
 					for(c = 0; c < _.options.slidesPerRow; c++) {
 						var target = (a * slidesPerSection + ((b * _.options.slidesPerRow) + c));
-						if (originalSlides.get(target)) {
-							row.appendChild(originalSlides.get(target));
+						if (originalSlides[target]) {
+							row.appendChild(originalSlides[target]);
 						}
 					}
 					slide.appendChild(row);
 				}
 				newSlides.appendChild(slide);
 			}
+			var vanilla$slider = _.$slider.get();
+			vanilla$slider[0].innerHTML = '';
+			vanilla$slider[0].appendChild(newSlides);
 
-			_.$slider.empty().append(newSlides);
-			_.$slider.children().children().children()
-				.css({
-					'width':(100 / _.options.slidesPerRow) + '%',
-					'display': 'inline-block'
-				});
-
+			[].forEach.call(originalSlides[0], function(children) {
+				children.style.width = (100 / _.options.slidesPerRow) + '%';
+				children.style.display = 'inline-block';
+			});
 		}
 
-	};
+  };
 
 	Slick.prototype.checkResponsive = function(initial, forceUpdate) {
 
