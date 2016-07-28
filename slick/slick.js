@@ -688,6 +688,8 @@
             if( !initial && triggerBreakpoint !== false ) {
                 _.$slider.trigger('breakpoint', [_, triggerBreakpoint]);
             }
+
+			console.log(triggerBreakpoint);
         }
 
     };
@@ -2989,6 +2991,28 @@
         height += parseInt(style.marginTop) + parseInt(style.marginBottom);
         return height;
     };
+
+	// @param  {Node} `el` The base element
+	// @param  {String} `type` The event type or name
+	// @usage : Slick.triggerEvent(element, 'mousedown');
+    Slick.prototype.triggerEvent = function(el, type) {
+        var e;
+
+	    if ('createEvent' in document) {
+	        // modern browsers, IE9+
+	        e = document.createEvent('HTMLEvents');
+
+	        e.initEvent(type, true, false);
+	        el.dispatchEvent(e);
+            
+	    } else {
+	        // IE 8
+	        e = document.createEventObject();
+
+	        e.eventType = type;
+	        el.fireEvent('on'+e.eventType, e);
+	    }
+	};
 
     $.fn.slick = function() {
         var _ = this,
