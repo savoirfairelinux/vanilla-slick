@@ -612,7 +612,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 			});
 		}
 
-  };
+	};
 
 	Slick.prototype.checkResponsive = function(initial, forceUpdate) {
 
