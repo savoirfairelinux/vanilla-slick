@@ -5,8 +5,8 @@ node_js:
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
   - "wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar"
-  - "java -jar selenium-server-standalone-2.53.1.jar &"
   - "export DISPLAY=:99"
+  - "java -jar selenium-server-standalone-2.53.1.jar &"
 script:
   - "export DISPLAY=:99"
   - "bash test.sh"
