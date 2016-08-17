@@ -945,16 +945,22 @@
     Slick.prototype.fadeSlide = function(slideIndex, callback) {
 
         var _ = this;
+        var _slides = _.$slides.get();//For vanilla
+
+		//_.cssTransitions = false; // tmp for vanilla
 
         if (_.cssTransitions === false) {
 
-            _.$slides.eq(slideIndex).css({
-                zIndex: _.options.zIndex
-            });
+            _slides[slideIndex].style.zindex = _.options.zIndex
 
-            _.$slides.eq(slideIndex).animate({
+            /*_.$slides.eq(slideIndex).animate({
                 opacity: 1
-            }, _.options.speed, _.options.easing, callback);
+            }, _.options.speed, _.options.easing, callback);*/
+			_slides[slideIndex].style.transitionProperty = "opacity";
+			_slides[slideIndex].style.transitionDuration = _.options.speed / 1000 + "s";
+			_slides[slideIndex].style.transitionEasing = _.options.easing;
+			_slides[slideIndex].style.opacity = "1";
+			callback();
 
         } else {
 
