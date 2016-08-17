@@ -188,14 +188,10 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.activateADA = function() {
 		var _ = this;
 
-		// TODO remove this line once $slideTrack is no longer a jquery object
-		var _slideTrack = _.$slideTrack.get(0); // assuming there is only one track
-
-		_.queryAll('.slick-active', _slideTrack).forEach(function(element, index, array){
-			element.setAttribute('aria-hidden', 'false');
-			_.queryAll('a, input, button, select', element).forEach(function(element2, index2, array2){
-				element2.setAttribute('tabindex', '0');
-			});
+		_.$slideTrack.find('.slick-active').attr({
+			'aria-hidden': 'false'
+		}).find('a, input, button, select').attr({
+			'tabindex': '0'
 		});
 
 	};
