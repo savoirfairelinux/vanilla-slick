@@ -692,7 +692,6 @@ Website: http://kenwheeler.github.io
 
 			// only trigger breakpoints during an actual break. not on initialize.
 			if( !initial && triggerBreakpoint !== false ) {
-				console.log([_, triggerBreakpoint]);
 				_.triggerEvent(_.$slider.get(0), 'breakpoint', [_, triggerBreakpoint]);
 			}
 		}
@@ -700,30 +699,28 @@ Website: http://kenwheeler.github.io
 	};
 
 	Slick.prototype.changeSlide = function(event, dontAnimate) {
-
 		var _ = this;
 		var $target = event.currentTarget;
 		var indexOffset;
 		var slideOffset;
-		var unevenOffset;
+		var unevenOffset;		
 
 		// If target is a link, prevent default action.
-		console.log($target);
-		
 		if(_.matches($target,'a')) {
 			event.preventDefault();
 		}
 
 		// If target is not the <li> element (ie: a child), find the <li>.
-		if(!_.matches($target,'li')) {
+		if(!_.matches($target,'li')) {			
 			$target = _.getClosest($target, 'li');
 		}
+
 
 		unevenOffset = (_.slideCount % _.options.slidesToScroll !== 0);
 		indexOffset = unevenOffset ? 0 : (_.slideCount - _.currentSlide) % _.options.slidesToScroll;
 
 		switch (event.data.message) {
-		case 'previous':
+			case 'previous':
 			slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
 			if (_.slideCount > _.options.slidesToShow) {
 				_.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
@@ -1044,6 +1041,7 @@ Website: http://kenwheeler.github.io
 					event.stopImmediatePropagation();
 					var $sf = $(this);
 
+
 					setTimeout(function() {
 						if ( _.options.pauseOnFocus ) {
 							_.focussed = _.matches($sf[0],':focus');
@@ -1285,7 +1283,7 @@ Website: http://kenwheeler.github.io
 		}
 
 		if (creation) {
-			_.triggerEvent(_.$slider[0], 'init', [_]);			
+			_.triggerEvent(_.$slider[0], 'init', [_]);
 		}
 
 		if (_.options.accessibility === true) {
@@ -2375,7 +2373,7 @@ Website: http://kenwheeler.github.io
 		var _ = this;
 		var targetElement = _.matches($(event.target)[0],'.slick-slide') ? $(event.target) : $(event.target).parents('.slick-slide');
 		var index = parseInt(targetElement.attr('data-slick-index'));
-
+		
 		if (!index) index = 0;
 
 		if (_.slideCount <= _.options.slidesToShow) {
@@ -2962,38 +2960,65 @@ Website: http://kenwheeler.github.io
 	// @usage Slick.getClosest(el, '.my-selector');
 	// Equivalent to jQuery.closest() method
 	Slick.prototype.getClosest = function(el, selector) {
-		var firstChar = selector.charAt(0);
+		// Variables
+		var initEl = el;
+        var firstChar = selector.charAt(0);
+        var supports = 'classList' in document.documentElement;
+        var attribute, value;
 
-		// Get closest match
-		for (; el && el !== document; el = el.parentNode) {
-			// If selector is a class
-			if (firstChar === '.') {
-				if (el.classList.contains(selector.substr(1))) {
-					return el;
-				}
-			}
+        // If selector is a data attribute, split attribute from value
+        if (firstChar === '[') {
+            selector = selector.substr(1, selector.length - 2);
+            attribute = selector.split('=');
 
-			// If selector is an ID
-			if (firstChar === '#') {
-				if (el.id === selector.substr(1)) {
-					return el;
-				}
-			}
+            if (attribute.length > 1) {
+                value = true;
+                attribute[1] = attribute[1].replace(/"/g, '').replace(/'/g, '');
+            }
+        }
 
-			// If selector is a data attribute
-			if (firstChar === '[') {
-				if (el.hasAttribute( selector.substr(1, selector.length - 2) )) {
-					return el;
-				}
-			}
+        // Get closest match
+        for (; el && el !== document && el.nodeType === 1; el = el.parentNode) {
+            // If selector is a class
+            if (firstChar === '.') {
+                if (supports) {
+                    if (el.classList.contains(selector.substr(1))) {
+                        return el;
+                    }
+                } else {
+                    if (new RegExp('(^|\\s)' + selector.substr(1) + '(\\s|$)').test(el.className)) {
+                        return el;
+                    }
+                }
+            }
 
-			// If selector is a tag
+            // If selector is an ID
+            if (firstChar === '#') {
+                if (el.id === selector.substr(1)) {
+                    return el;
+                }
+            }
+
+            // If selector is a data attribute
+            if (firstChar === '[') {
+                if (el.hasAttribute(attribute[0])) {
+                    if (value) {
+                        if (el.getAttribute(attribute[0]) === attribute[1]) {
+                            return el;
+                        }
+                    } else {
+                        return el;
+                    }
+                }
+            }
+
+            // If selector is a tag
 			if (el.tagName.toLowerCase() === selector) {
-				return el;
-			}
-		}
+                return el;
+            }
+        }
 
-		return false;
+        return initEl;
 	};
 
 	// @param  {Node} `el` The base element
