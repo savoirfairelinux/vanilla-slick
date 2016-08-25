@@ -955,7 +955,7 @@
 
             /*_.$slides.eq(slideIndex).animate({
                 opacity: 1
-            }, _.options.speed, _.options.easing, callback);*/
+            }, _.options.speed, _.options.easing, callback);*/ //Original slick function.
 			_slides[slideIndex].style.transitionProperty = "opacity";
 			_slides[slideIndex].style.transitionDuration = _.options.speed / 1000 + "s";
 			_slides[slideIndex].style.transitionEasing = _.options.easing;
