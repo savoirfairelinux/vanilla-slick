@@ -1,10 +1,10 @@
 /*
-	_ _      _       _
+     _ _      _       _
 ___| (_) ___| | __  (_)___
 / __| | |/ __| |/ /  | / __|
 \__ \ | | (__|   < _ | \__ \
 |___/_|_|\___|_|\_(_)/ |___/
-				|__/
+                   |__/
 
 Version: 1.5.9
 Author: Ken Wheeler
@@ -844,9 +844,11 @@ Issues: http://github.com/kenwheeler/slick/issues
 		var _ = this, originalSlides;
 
 		if(_.options.rows > 1) {
-			originalSlides = _.$slides.children().children();
-			originalSlides.removeAttr('style');
-			_.$slider.empty().append(originalSlides);
+			originalSlides = _.$slides.children.children;
+			originalSlides.removeAttribute('style');
+			_.$slider.innerHTML = '';
+			_.$slider.appendChild(originalSlides);
+
 		}
 
 	};
@@ -1989,24 +1991,28 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.setFade = function() {
 
 		var _ = this,
-            targetLeft,
-            slidesArray = _.$slides.toArray();
+			targetLeft,
+			slidesArray = _.$slides.toArray(),
+			child;
 
-        slidesArray.forEach(function(element, index) {
+		slidesArray.forEach(function(element, index) {
+			child = element.children[0];
 			targetLeft = (_.slideWidth * index) * -1;
-            element.style['position'] = 'relative';
-            element.style['top'] = 0;
-            element.style['zIndex'] = _.options.zIndex - 2;
-            element.style['opacity'] = 0;
+			child.style['position'] = 'relative';
+			child.style['top'] = 0;
+			child.style['zIndex'] = _.options.zIndex - 2;
+			child.style['opacity'] = 0;
 			if (_.options.rtl === true) {
-                element.style['right'] = targetLeft;
+				child.style['right'] = targetLeft;
 			} else {
-                element.style['left'] = targetLeft;
+				child.style.left = ""+targetLeft+"px";
 			}
 		});
 
-        slidesArray[_.currentSlide].style['zIndex'] = _.options.zIndex - 1;
-        slidesArray[_.currentSlide].style['opacity'] = 1;
+		slidesArray[_.currentSlide].style['zIndex'] = _.options.zIndex - 1;
+		slidesArray[_.currentSlide].style['opacity'] = 1;
+		slidesArray[_.currentSlide].children[0].style['zIndex'] = _.options.zIndex - 1;
+		slidesArray[_.currentSlide].children[0].style['opacity'] = 1;
 
 	};
 
