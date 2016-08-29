@@ -371,19 +371,12 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	Slick.prototype.applyTransition = function(slide) {
 
-		var _ = this,
-			transition = {};
+		var _ = this;
 
 		if (_.options.fade === false) {
-			transition[_.transitionType] = _.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
+			_.$slideTrack.get(0).style[_.transitionType] =  _.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
 		} else {
-			transition[_.transitionType] = 'opacity ' + _.options.speed + 'ms ' + _.options.cssEase;
-		}
-
-		if (_.options.fade === false) {
-			_.$slideTrack.css(transition);
-		} else {
-			_.$slides.eq(slide).css(transition);
+			_.$slides.get()[slide].style[_.transitionType] = 'opacity ' + _.options.speed + 'ms ' + _.options.cssEase;
 		}
 
 	};
