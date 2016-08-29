@@ -89,7 +89,7 @@ define(function (require) {
                 .findByCssSelector('#slideSync .slider-nav .slick-next.slick-arrow')
                     .click()
                     .end()
-                .sleep(300)
+                .sleep(600)
                 .findAllByCssSelector('#slideSync .slider .slick-current')
                 .getVisibleText()
                 .then(function (arrayText) {
