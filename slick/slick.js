@@ -701,7 +701,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.changeSlide = function(event, dontAnimate) {
 
 		var _ = this;
-		var $target = event.currentTarget;
+		var $target = event.currentTarget || false;
 		var indexOffset;
 		var slideOffset;
 		var unevenOffset;
@@ -742,9 +742,11 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 			_.slideHandler(_.checkNavigable(index), false, dontAnimate);
 
-			[].forEach.call($target.children, function(child) {
-				child.dispatchEvent(customTrigger);
-			} );
+            if($target){
+    			[].forEach.call($target.children, function(child) {
+    				child.dispatchEvent(customTrigger);
+    			} );
+            }
 			break;
 
 		default:
@@ -2948,13 +2950,13 @@ Issues: http://github.com/kenwheeler/slick/issues
 	// @usage Slick.matches(el, '.my-class');
 	// Equivalent to jQuery.is() method
 	Slick.prototype.matches = function(el, selector) {
-		return (el.matches
+		return (el instanceof HTMLElement) ? (el.matches
 				|| el.matchesSelector
 				|| el.msMatchesSelector
 				|| el.mozMatchesSelector
 				|| el.webkitMatchesSelector
 				|| el.oMatchesSelector)
-			.call(el, selector);
+			.call(el, selector) : false;
 	};
 
 	// @param  {Node} `el` The base element
