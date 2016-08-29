@@ -243,12 +243,6 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		_.reinit();
 
-		if ( asNavFor && asNavFor !== null ) {
-			asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
-				return elem !== _.$slider.get(0);
-			});
-			asNavFor = $(asNavFor);
-		}
 	};
 
 	Slick.prototype.animateHeight = function() {
@@ -349,12 +343,12 @@ Issues: http://github.com/kenwheeler/slick/issues
 		var _ = this,
 			asNavFor = _.options.asNavFor;
 
-		if ( asNavFor && asNavFor !== null ) {
-			asNavFor = [].slice.call(document.querySelectorAll(asNavFor)).filter(function(elem, index, array){
-				return !elem.isSameNode(_.$slider.get(0));
-			});
-			asNavFor = $(asNavFor);
-		}
+        if ( asNavFor && asNavFor !== null ) {
+    		asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
+    			return elem !== _.$slider.get(0);
+    		});
+    		asNavFor = $(asNavFor);
+    	}
 
 		return asNavFor;
 	};
