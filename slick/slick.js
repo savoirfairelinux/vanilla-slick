@@ -202,7 +202,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	Slick.prototype.addSlide = Slick.prototype.slickAdd = function(markup, index, addBefore) {
 
-		var _ = this;
+		var _ = this,
+            $slideTrack = _.$slideTrack.get(0);
 
 		if (typeof(index) === 'boolean') {
 			addBefore = index;
@@ -223,9 +224,17 @@ Issues: http://github.com/kenwheeler/slick/issues
 			}
 		} else {
 			if (addBefore === true) {
-				$(markup).prependTo(_.$slideTrack);
+                if (markup instanceof HTMLElement){
+                    $slideTrack.insertBefore(markup, $slideTrack.firstChild)
+                } else {
+                    $slideTrack.innerHTML = markup + $slideTrack.innerHTML;
+                }
 			} else {
-				$(markup).appendTo(_.$slideTrack);
+                if (markup instanceof HTMLElement){
+                    $slideTrack.appendChild(markup);
+                } else {
+                    $slideTrack.innerHTML += markup;
+                }
 			}
 		}
 
