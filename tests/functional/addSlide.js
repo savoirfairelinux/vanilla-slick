@@ -38,6 +38,25 @@ define(function(require) {
 				.end();
 		},
 
+        'addSlideDomAtEnd': function() {
+            return this.remote
+                .get(require.toUrl('src/addSlide/index.html'))
+                .setFindTimeout(5000)
+                .execute(initErrorLog)
+                .findByCssSelector('.addSlideAtEnd .js-add-slide-dom')
+                    .click()
+                    .end()
+                .findByCssSelector('.addSlideAtEnd [data-slick-index="1"]')
+                .getVisibleText()
+                .then(function(text) {
+                    assert.strictEqual('2', text,
+                        'The slide 2 should be added');
+                })
+                .execute(returnErrorLog)
+                .then(testErrorLog)
+                .end();
+        },
+
 
 	});
 });

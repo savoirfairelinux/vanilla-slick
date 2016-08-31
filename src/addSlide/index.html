@@ -23,6 +23,7 @@
             <div class="buttons">
               <a href="javascript:void(0)" class="button js-add-slide">Add Slide</a>
               <a href="javascript:void(0)" class="button js-remove-slide">Remove Slide</a>
+              <a href="javascript:void(0)" class="button js-add-slide-dom">Add Slide DOM</a>
             </div>
           </div>
 
@@ -46,8 +47,15 @@
         });
         var slideIndex = 1;
         $('.js-add-slide').on('click', function() {
+          slideIndex++;
+          $('.add-remove').slick('slickAdd','<div><h3>' + slideIndex + '</h3></div>');
+        });
+
+        $('.js-add-slide-dom').on('click', function() {
             slideIndex++;
-            $('.add-remove').slick('slickAdd','<div><h3>' + slideIndex + '</h3></div>');
+            var newSlide = document.createElement("div");
+            newSlide.innerHTML = '<h3>' + slideIndex + '</h3>';
+            $('.add-remove').slick('slickAdd',newSlide);
         });
 
         $('.js-remove-slide').on('click', function() {
