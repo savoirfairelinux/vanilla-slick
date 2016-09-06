@@ -203,7 +203,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.addSlide = Slick.prototype.slickAdd = function(markup, index, addBefore) {
 
 		var _ = this,
-            $slideTrack = _.$slideTrack.get(0);
+            $slideTrack = _.$slideTrack.get(0), // TODO remove .get(0) in future
+            $slides = Array.prototype.slice.call(_.$slides.get()); // TODO remove .get() in future (maybe the array converter too)
 
 		if (typeof(index) === 'boolean') {
 			addBefore = index;
@@ -214,41 +215,48 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		_.unload();
 
+        // Convert markup to an HTMLElement
+        if (!(markup instanceof HTMLElement)){
+            var tempNode = document.createElement('div');
+            tempNode.innerHTML = markup;
+            markup = tempNode.children[0];
+        }
+
 		if (typeof(index) === 'number') {
 			if (index === 0 && _.$slides.length === 0) {
-				$(markup).appendTo(_.$slideTrack);
+                $slideTrack.appendChild(markup);
 			} else if (addBefore) {
-				$(markup).insertBefore(_.$slides.eq(index));
+                $slideTrack.insertBefore(markup, $slides[index]);
 			} else {
-				$(markup).insertAfter(_.$slides.eq(index));
+                $slideTrack.insertBefore(markup, $slides[index].nextSibling);
 			}
 		} else {
 			if (addBefore === true) {
-                if (markup instanceof HTMLElement){
-                    $slideTrack.insertBefore(markup, $slideTrack.firstChild)
-                } else {
-                    $slideTrack.innerHTML = markup + $slideTrack.innerHTML;
-                }
+                $slideTrack.insertBefore(markup, $slideTrack.firstChild);
 			} else {
-                if (markup instanceof HTMLElement){
-                    $slideTrack.appendChild(markup);
-                } else {
-                    $slideTrack.innerHTML += markup;
-                }
+                $slideTrack.appendChild(markup);
 			}
 		}
 
-		_.$slides = _.$slideTrack.children(this.options.slide);
 
-		_.$slideTrack.children(this.options.slide).detach();
+		$slides = Array.prototype.slice.call($slideTrack.children).filter(function(elem){
+            return _.options.slide === '' || _.matches(elem, _.options.slide);
+        }); // Save slides
 
-		_.$slideTrack.append(_.$slides);
+        $slides.forEach(function(elem){
+            $slideTrack.removeChild(elem);
+        }); // (Detach) each slide from slideTrack
 
-		_.$slides.each(function(index, element) {
-			$(element).attr('data-slick-index', index);
+        $slides.forEach(function(elem){
+            $slideTrack.appendChild(elem);
+        }); // Append each slide on slideTrack
+
+		$slides.forEach(function(elem, index) {
+		    elem.setAttribute('data-slick-index', index);
 		});
 
-		_.$slidesCache = _.$slides;
+		_.$slidesCache = _.$slides = $($slides); // TODO remove $() in future
+        _.$slideTrack = $($slideTrack); // TODO remove $() in future
 
 		_.reinit();
 

@@ -27,6 +27,36 @@
             </div>
           </div>
 
+          <hr>
+
+          <h2>Add on index</h2>
+          <div class="addSlideAtIndex">
+            <div class="slider add-index">
+              <div><h3>1</h3></div>
+              <div><h3>2</h3></div>
+              <div><h3>3</h3></div>
+              <div><h3>4</h3></div>
+            </div>
+            <div class="buttons">
+              <a href="javascript:void(0)" class="button js-add-slide-index-before">Add Slide index 1 before</a>
+              <a href="javascript:void(0)" class="button js-add-slide-index-after">Add Slide index 1 after</a>
+            </div>
+          </div>
+
+          <h2>Add with filter</h2>
+          <div class="addSlideWithFilter">
+            <div class="slider add-with-filter">
+              <div class="filtred-slide"><h3>1</h3></div>
+              <div><h3>2</h3></div>
+              <div class="filtred-slide"><h3>3</h3></div>
+              <div class="filtred-slide"><h3>4</h3></div>
+              <div class="filtred-slide"><h3>5</h3></div>
+            </div>
+            <div class="buttons">
+              <a href="javascript:void(0)" class="button js-add-slide-filter">Add Slide</a>
+            </div>
+          </div>
+
 
       </div>
       </section>
@@ -64,6 +94,38 @@
                 slideIndex--;
             }
         });
+
+
+        $('.add-index').slick({
+            dots: true,
+            slidesToShow: 3,
+            speed: 500,
+            slidesToScroll: 3
+        });
+
+        $('.js-add-slide-index-before').on('click', function() {
+          $('.add-index').slick('slickAdd','<div><h3>1 before</h3></div>', 1, true);
+        });
+
+        $('.js-add-slide-index-after').on('click', function() {
+          $('.add-index').slick('slickAdd','<div><h3>1 after</h3></div>', 1, false);
+        });
+
+        $('.add-with-filter').slick({
+            dots: true,
+            slidesToShow: 3,
+            speed: 500,
+            slide: ".filtred-slide",
+            slidesToScroll: 3
+        });
+
+        var slideIndexFilter = 5;
+        $('.js-add-slide-filter').on('click', function() {
+          slideIndexFilter++;
+          $('.add-with-filter').slick('slickAdd','<div class="filtred-slide"><h3>' + slideIndexFilter + '</h3></div>');
+        });
+
+
 
 
     });
