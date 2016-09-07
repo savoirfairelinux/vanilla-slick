@@ -76,7 +76,7 @@
         var filtered = false,
           param,
           cssSelector = ':nth-child(2n)',
-          node = document.querySelector('.filtering:nth-child(4)'),
+          node = document.querySelector('.filtering [data-slick-index="2"]'),
           functionFilter = function (elem){
             return parseInt(elem.textContent) % 3 === 0;
           };
