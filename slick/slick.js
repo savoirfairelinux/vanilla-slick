@@ -581,9 +581,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 		var _ = this, a, b, c, newSlides, numOfSlides, originalSlides, slidesPerSection;
 
 		newSlides = document.createDocumentFragment();
-		originalSlides = _.$slider.get();
-		originalSlides = originalSlides[0].children;
-		originalSlides = [].slice.call(originalSlides);
+		originalSlides = [].slice.call(_.$slider.get(0).children);
 
 		if(_.options.rows > 1) {
 			slidesPerSection = _.options.slidesPerRow * _.options.rows;
