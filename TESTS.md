@@ -17,11 +17,13 @@ Tested with "node --version v4.2.2".
 
 ## Selenium
 
-Selenium is an interface that can interact with multiple browsers for testing. You can get it [here](http://www.seleniumhq.org/download/)
+Selenium is an interface that can interact with multiple browsers for testing.
+You can get it [here](http://selenium-release.storage.googleapis.com/index.html)
+Required selenium-server-standalone version is 2.53.1
 You can start it with the following line, no configuration should be necessary. It should be running before you start the tests.
 
 ```sh
-java -jar selenium-server-standalone-2.53.0.jar
+java -jar selenium-server-standalone-2.53.1.jar
 ```
 
 
@@ -30,6 +32,3 @@ java -jar selenium-server-standalone-2.53.0.jar
 ```sh
 ./node_modules/.bin/intern-runner config=tests/intern
 ```
-
-
-
