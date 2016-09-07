@@ -1358,23 +1358,26 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	Slick.prototype.initDotEvents = function() {
 
-		var _ = this;
+        var _ = this;
 
-		if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
-			$('li', _.$dots).on('click.slick', {
-				message: 'index'
-			}, _.changeSlide);
-		}
+        if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
+            var elements = _.$dots.get()[0].children;
 
-		if ( _.options.dots === true && _.options.pauseOnDotsHover === true ) {
+            [].forEach.call(elements, function(element) {
+                element.addEventListener('click', function(event) {
+                    event.data = {message: 'index'};
+                    _.changeSlide(event);
+                });
+            });
+        }
 
-			$('li', _.$dots)
-				.on('mouseenter.slick', _.interrupt.bind(_, true))
-				.on('mouseleave.slick', _.interrupt.bind(_, false));
-
-		}
-
-	};
+        if ( _.options.dots === true && _.options.pauseOnDotsHover === true ) {
+            [].forEach.call(elements, function(element) {
+                element.addEventListener('mouseenter', _.interrupt.bind(_, true), false);
+                element.addEventListener('mouseleave', _.interrupt.bind(_, false), false);
+            });
+        }
+    };
 
 	Slick.prototype.initSlideEvents = function() {
 
