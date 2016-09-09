@@ -3043,7 +3043,7 @@ Website: http://kenwheeler.github.io
 	//next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
 	Slick.prototype.queryAll = function (expr, container) {
 		return Array.prototype.slice.call((container || document).querySelectorAll(expr));
-	}
+	};
 
 	$.fn.slick = function() {
 		var _ = this,
