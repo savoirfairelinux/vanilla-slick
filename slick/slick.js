@@ -186,10 +186,14 @@ Website: http://kenwheeler.github.io
 	Slick.prototype.activateADA = function() {
 		var _ = this;
 
-		_.$slideTrack.find('.slick-active').attr({
-			'aria-hidden': 'false'
-		}).find('a, input, button, select').attr({
-			'tabindex': '0'
+		// TODO remove this line once $slideTrack is no longer a jquery object
+		var _slideTrack = _.$slideTrack.get(0); // assuming there is only one track
+
+		_.queryAll('.slick-active', _slideTrack).forEach(function(element, index, array){
+			element.setAttribute('aria-hidden', 'false');
+			_.queryAll('a, input, button, select', element).forEach(function(element2, index2, array2){
+				element2.setAttribute('tabindex', '0');
+			});
 		});
 
 	};
@@ -237,12 +241,6 @@ Website: http://kenwheeler.github.io
 
 		_.reinit();
 
-		if ( asNavFor && asNavFor !== null ) {
-			asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
-				return elem !== _.$slider.get(0);
-			});
-			asNavFor = $(asNavFor);
-		}
 	};
 
 	Slick.prototype.animateHeight = function() {
@@ -343,12 +341,12 @@ Website: http://kenwheeler.github.io
 		var _ = this,
 			asNavFor = _.options.asNavFor;
 
-		if ( asNavFor && asNavFor !== null ) {
-			asNavFor = [].slice.call(document.querySelectorAll(asNavFor)).filter(function(elem, index, array){
-				return !elem.isSameNode(_.$slider.get(0));
-			});
-			asNavFor = $(asNavFor);
-		}
+        if ( asNavFor && asNavFor !== null ) {
+    		asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
+    			return elem !== _.$slider.get(0);
+    		});
+    		asNavFor = $(asNavFor);
+    	}
 
 		return asNavFor;
 	};
@@ -371,19 +369,12 @@ Website: http://kenwheeler.github.io
 
 	Slick.prototype.applyTransition = function(slide) {
 
-		var _ = this,
-			transition = {};
+		var _ = this;
 
 		if (_.options.fade === false) {
-			transition[_.transitionType] = _.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
+			_.$slideTrack.get(0).style[_.transitionType] =  _.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
 		} else {
-			transition[_.transitionType] = 'opacity ' + _.options.speed + 'ms ' + _.options.cssEase;
-		}
-
-		if (_.options.fade === false) {
-			_.$slideTrack.css(transition);
-		} else {
-			_.$slides.eq(slide).css(transition);
+			_.$slides.get()[slide].style[_.transitionType] = 'opacity ' + _.options.speed + 'ms ' + _.options.cssEase;
 		}
 
 	};
@@ -572,40 +563,36 @@ Website: http://kenwheeler.github.io
 
 	Slick.prototype.buildRows = function() {
 
-		var _ = this, a, b, c, newSlides, numOfSlides, originalSlides,slidesPerSection;
+		var _ = this, a, b, c, newSlides, numOfSlides, originalSlides, slidesPerSection;
 
 		newSlides = document.createDocumentFragment();
-		originalSlides = _.$slider.children();
+		originalSlides = [].slice.call(_.$slider.get(0).children);
 
 		if(_.options.rows > 1) {
-
 			slidesPerSection = _.options.slidesPerRow * _.options.rows;
-			numOfSlides = Math.ceil(
-				originalSlides.length / slidesPerSection
-			);
-
+			numOfSlides = Math.ceil(originalSlides.length / slidesPerSection);
 			for(a = 0; a < numOfSlides; a++){
 				var slide = document.createElement('div');
 				for(b = 0; b < _.options.rows; b++) {
 					var row = document.createElement('div');
 					for(c = 0; c < _.options.slidesPerRow; c++) {
 						var target = (a * slidesPerSection + ((b * _.options.slidesPerRow) + c));
-						if (originalSlides.get(target)) {
-							row.appendChild(originalSlides.get(target));
+						if (originalSlides[target]) {
+							row.appendChild(originalSlides[target]);
 						}
 					}
 					slide.appendChild(row);
 				}
 				newSlides.appendChild(slide);
 			}
+			var vanilla$slider = _.$slider.get();
+			vanilla$slider[0].innerHTML = '';
+			vanilla$slider[0].appendChild(newSlides);
 
-			_.$slider.empty().append(newSlides);
-			_.$slider.children().children().children()
-				.css({
-					'width':(100 / _.options.slidesPerRow) + '%',
-					'display': 'inline-block'
-				});
-
+			[].forEach.call(originalSlides[0], function(children) {
+				children.style.width = (100 / _.options.slidesPerRow) + '%';
+				children.style.display = 'inline-block';
+			});
 		}
 
 	};
@@ -700,7 +687,7 @@ Website: http://kenwheeler.github.io
 
 	Slick.prototype.changeSlide = function(event, dontAnimate) {
 		var _ = this;
-		var $target = event.currentTarget;
+		var $target = event.currentTarget || false;
 		var indexOffset;
 		var slideOffset;
 		var unevenOffset;		
@@ -742,9 +729,11 @@ Website: http://kenwheeler.github.io
 
 			_.slideHandler(_.checkNavigable(index), false, dontAnimate);
 
-			[].forEach.call($target.children, function(child) {
-				child.dispatchEvent(customTrigger);
-			} );
+            if($target){
+    			[].forEach.call($target.children, function(child) {
+    				child.dispatchEvent(customTrigger);
+    			} );
+            }
 			break;
 
 		default:
@@ -1985,25 +1974,25 @@ Website: http://kenwheeler.github.io
 
 	Slick.prototype.setFade = function() {
 
-		var _ = this,
-            targetLeft,
-            slidesArray = _.$slides.toArray();
+        var _ = this,
+			targetLeft,
+			slidesArray = _.$slides.toArray();
 
-        slidesArray.forEach(function(element, index) {
+		slidesArray.forEach(function(element, index) {
 			targetLeft = (_.slideWidth * index) * -1;
-            element.style['position'] = 'relative';
-            element.style['top'] = 0;
-            element.style['zIndex'] = _.options.zIndex - 2;
-            element.style['opacity'] = 0;
+			element.style['position'] = 'relative';
+			element.style['top'] = 0;
+			element.style['zIndex'] = _.options.zIndex - 2;
+			element.style['opacity'] = 0;
 			if (_.options.rtl === true) {
-                element.style['right'] = targetLeft;
+				element.style.right = targetLeft + "px";
 			} else {
-                element.style['left'] = targetLeft;
+				element.style.left = targetLeft + "px";
 			}
 		});
 
-        slidesArray[_.currentSlide].style['zIndex'] = _.options.zIndex - 1;
-        slidesArray[_.currentSlide].style['opacity'] = 1;
+		slidesArray[_.currentSlide].style['zIndex'] = _.options.zIndex - 1;
+		slidesArray[_.currentSlide].style['opacity'] = 1;
 
 	};
 
@@ -2945,13 +2934,13 @@ Website: http://kenwheeler.github.io
 	// @usage Slick.matches(el, '.my-class');
 	// Equivalent to jQuery.is() method
 	Slick.prototype.matches = function(el, selector) {
-		return (el.matches
+		return (el instanceof HTMLElement) ? (el.matches
 				|| el.matchesSelector
 				|| el.msMatchesSelector
 				|| el.mozMatchesSelector
 				|| el.webkitMatchesSelector
 				|| el.oMatchesSelector)
-			.call(el, selector);
+			.call(el, selector) : false;
 	};
 
 	// @param  {Node} `el` The base element

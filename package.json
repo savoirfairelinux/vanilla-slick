@@ -48,6 +48,6 @@
     "jquery": ">=1.7.2"
   },
   "devDependencies": {
-    "intern": "^3.0.6"
+    "intern": "3.2.3"
   }
 }
