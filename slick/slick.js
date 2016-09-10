@@ -2945,13 +2945,13 @@ Issues: http://github.com/kenwheeler/slick/issues
 	// Equivalent to jQuery.filter() method, BUT do not support extended jQuery selector https://api.jquery.com/category/selectors/jquery-selector-extensions/
 	Slick.prototype.filterNodeUtil = function(collectionOfNode, filter) {
 		var _ = this,
-            domParent = document.createElement("div"),
+			domParent = document.createElement("div"),
 			filterFunction;
 
 		if (typeof filter === "string" && filter) {
-            Array.prototype.forEach.call(collectionOfNode, function(elem) {
-                domParent.appendChild(elem); // Needed for matches, if collectionOfNode is out the DOM
-            });
+			Array.prototype.forEach.call(collectionOfNode, function(elem) {
+				domParent.appendChild(elem); // Needed for matches, if collectionOfNode is out the DOM
+			});
 			filterFunction = function(elem) {
 				return _.matches(elem, filter)
 			};
