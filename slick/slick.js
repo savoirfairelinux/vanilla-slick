@@ -2950,7 +2950,9 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		if (typeof filter === "string" && filter) {
 			Array.prototype.forEach.call(collectionOfNode, function(elem) {
-				domParent.appendChild(elem); // Needed for matches, if collectionOfNode is out the DOM
+                if (elem.parentNode === null){// Needed for matches, if collectionOfNode is out the DOM
+                    domParent.appendChild(elem);
+                }
 			});
 			filterFunction = function(elem) {
 				return _.matches(elem, filter)
