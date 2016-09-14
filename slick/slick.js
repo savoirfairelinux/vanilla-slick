@@ -1,20 +1,20 @@
 /*
- _ _      _       _
-___| (_) ___| | __  (_)___
+ _ _	  _		  _
+ ___| (_) ___| | __	 (_)___
  / __| | |/ __| |/ /  | / __|
- \__ \ | | (__|   < _ | \__ \
+ \__ \ | | (__|	  < _ | \__ \
  |___/_|_|\___|_|\_(_)/ |___/
  |__/
 
-Version: 1.5.9
+ Version: 1.5.9
  Author: Ken Wheeler
-Author: Ken Wheeler
-Website: http://kenwheeler.github.io
+ Author: Ken Wheeler
+ Website: http://kenwheeler.github.io
  Docs: http://kenwheeler.github.io/slick
  Repo: http://github.com/kenwheeler/slick
  Issues: http://github.com/kenwheeler/slick/issues
 
-*/
+ */
 /* global window, document, define, jQuery, setInterval, clearInterval */
 (function(factory) {
 	'use strict';
@@ -341,12 +341,12 @@ Website: http://kenwheeler.github.io
 		var _ = this,
 			asNavFor = _.options.asNavFor;
 
-        if ( asNavFor && asNavFor !== null ) {
-    		asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
-    			return elem !== _.$slider.get(0);
-    		});
-    		asNavFor = $(asNavFor);
-    	}
+		if ( asNavFor && asNavFor !== null ) {
+			asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
+				return elem !== _.$slider.get(0);
+			});
+			asNavFor = $(asNavFor);
+		}
 
 		return asNavFor;
 	};
@@ -372,7 +372,7 @@ Website: http://kenwheeler.github.io
 		var _ = this;
 
 		if (_.options.fade === false) {
-			_.$slideTrack.get(0).style[_.transitionType] =  _.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
+			_.$slideTrack.get(0).style[_.transitionType] =	_.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
 		} else {
 			_.$slides.get()[slide].style[_.transitionType] = 'opacity ' + _.options.speed + 'ms ' + _.options.cssEase;
 		}
@@ -517,8 +517,8 @@ Website: http://kenwheeler.github.io
 
 		_.$slides =
 			_.$slider
-            .children( _.options.slide + ':not(.slick-cloned)')
-            .addClass('slick-slide');
+			.children( _.options.slide + ':not(.slick-cloned)')
+			.addClass('slick-slide');
 
 		_.slideCount = _.$slides.length;
 
@@ -613,8 +613,8 @@ Website: http://kenwheeler.github.io
 		}
 
 		if ( _.options.responsive &&
-             _.options.responsive.length &&
-             _.options.responsive !== null) {
+			 _.options.responsive.length &&
+			 _.options.responsive !== null) {
 
 			targetBreakpoint = null;
 
@@ -708,36 +708,36 @@ Website: http://kenwheeler.github.io
 
 		switch (event.data.message) {
 			case 'previous':
-			slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
-			if (_.slideCount > _.options.slidesToShow) {
-				_.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
-			}
-			break;
+				slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
+				if (_.slideCount > _.options.slidesToShow) {
+					_.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
+				}
+				break;
 
-		case 'next':
-			slideOffset = indexOffset === 0 ? _.options.slidesToScroll : indexOffset;
-			if (_.slideCount > _.options.slidesToShow) {
-				_.slideHandler(_.currentSlide + slideOffset, false, dontAnimate);
-			}
-			break;
+			case 'next':
+				slideOffset = indexOffset === 0 ? _.options.slidesToScroll : indexOffset;
+				if (_.slideCount > _.options.slidesToShow) {
+					_.slideHandler(_.currentSlide + slideOffset, false, dontAnimate);
+				}
+				break;
 
-		case 'index':
-			var index = event.data.index === 0 ? 0 : event.data.index || [].slice.call($target.parentNode.children).indexOf($target) * _.options.slidesToScroll;
-			var customTrigger = document.createEvent('HTMLEvents');
+			case 'index':
+				var index = event.data.index === 0 ? 0 : event.data.index || [].slice.call($target.parentNode.children).indexOf($target) * _.options.slidesToScroll;
+				var customTrigger = document.createEvent('HTMLEvents');
 
-			customTrigger.initEvent('focus', true, false);
+				customTrigger.initEvent('focus', true, false);
 
-			_.slideHandler(_.checkNavigable(index), false, dontAnimate);
+				_.slideHandler(_.checkNavigable(index), false, dontAnimate);
 
-            if($target){
-    			[].forEach.call($target.children, function(child) {
-    				child.dispatchEvent(customTrigger);
-    			} );
-            }
-			break;
+				if($target){
+					[].forEach.call($target.children, function(child) {
+						child.dispatchEvent(customTrigger);
+					} );
+				}
+				break;
 
-		default:
-			return;
+			default:
+				return;
 		}
 	};
 
@@ -1272,7 +1272,7 @@ Website: http://kenwheeler.github.io
 		}
 
 		if (creation) {
-			_.triggerEvent(_.$slider[0], 'init', [_]);
+			_.triggerEvent(_.$slider.get(0), 'init', [_]);
 		}
 
 		if (_.options.accessibility === true) {
@@ -1451,12 +1451,12 @@ Website: http://kenwheeler.github.io
 	Slick.prototype.keyHandler = function(event) {
 
 		var _ = this;
-        //Dont slide if the cursor is inside the form fields and arrow keys are pressed
+		//Dont slide if the cursor is inside the form fields and arrow keys are pressed
 		if(!event.target.tagName.match('TEXTAREA|INPUT|SELECT')) {
 			if (event.keyCode === 37 && _.options.accessibility === true) {
 				_.changeSlide({
 					data: {
-						message: _.options.rtl === true ? 'next' :  'previous'
+						message: _.options.rtl === true ? 'next' :	'previous'
 					}
 				});
 			} else if (event.keyCode === 39 && _.options.accessibility === true) {
@@ -1811,8 +1811,8 @@ Website: http://kenwheeler.github.io
 
 		_.$slides =
 			_.$slideTrack
-            .children(_.options.slide)
-            .addClass('slick-slide');
+			.children(_.options.slide)
+			.addClass('slick-slide');
 
 		_.slideCount = _.$slides.length;
 
@@ -1974,7 +1974,7 @@ Website: http://kenwheeler.github.io
 
 	Slick.prototype.setFade = function() {
 
-        var _ = this,
+		var _ = this,
 			targetLeft,
 			slidesArray = _.$slides.toArray();
 
@@ -2013,14 +2013,14 @@ Website: http://kenwheeler.github.io
 			/**
 			 * accepts arguments in format of:
 			 *
-			 *  - for changing a single option's value:
-			 *     .slick("setOption", option, value, refresh )
+			 *	- for changing a single option's value:
+			 *	   .slick("setOption", option, value, refresh )
 			 *
-			 *  - for changing a set of responsive options:
-			 *     .slick("setOption", 'responsive', [{}, ...], refresh )
+			 *	- for changing a set of responsive options:
+			 *	   .slick("setOption", 'responsive', [{}, ...], refresh )
 			 *
-			 *  - for updating multiple values at once (not responsive)
-			 *     .slick("setOption", { 'option': value, ... }, refresh )
+			 *	- for updating multiple values at once (not responsive)
+			 *	   .slick("setOption", { 'option': value, ... }, refresh )
 			 */
 
 			var _ = this, l, item, option, value, refresh = false, type;
@@ -2580,31 +2580,31 @@ Website: http://kenwheeler.github.io
 
 			switch ( direction ) {
 
-            case 'left':
-            case 'down':
+				case 'left':
+				case 'down':
 
-                slideCount =
-                    _.options.swipeToSlide ?
-                    _.checkNavigable( _.currentSlide + _.getSlideCount() ) :
-                    _.currentSlide + _.getSlideCount();
+					slideCount =
+						_.options.swipeToSlide ?
+						_.checkNavigable( _.currentSlide + _.getSlideCount() ) :
+						_.currentSlide + _.getSlideCount();
 
-                _.currentDirection = 0;
+					_.currentDirection = 0;
 
-                break;
+					break;
 
-            case 'right':
-            case 'up':
+				case 'right':
+				case 'up':
 
-                slideCount =
-                    _.options.swipeToSlide ?
-                    _.checkNavigable( _.currentSlide - _.getSlideCount() ) :
-                    _.currentSlide - _.getSlideCount();
+					slideCount =
+						_.options.swipeToSlide ?
+						_.checkNavigable( _.currentSlide - _.getSlideCount() ) :
+						_.currentSlide - _.getSlideCount();
 
-                _.currentDirection = 1;
+					_.currentDirection = 1;
 
-                break;
+					break;
 
-            default:
+				default:
 
 
 			}
@@ -2653,17 +2653,17 @@ Website: http://kenwheeler.github.io
 
 		switch (event.data.action) {
 
-        case 'start':
-            _.swipeStart(event);
-            break;
+			case 'start':
+				_.swipeStart(event);
+				break;
 
-        case 'move':
-            _.swipeMove(event);
-            break;
+			case 'move':
+				_.swipeMove(event);
+				break;
 
-        case 'end':
-            _.swipeEnd(event);
-            break;
+			case 'end':
+				_.swipeEnd(event);
+				break;
 
 		}
 
@@ -2825,8 +2825,8 @@ Website: http://kenwheeler.github.io
 		centerOffset = Math.floor(_.options.slidesToShow / 2);
 
 		if ( _.options.arrows === true &&
-             _.slideCount > _.options.slidesToShow &&
-             !_.options.infinite ) {
+			 _.slideCount > _.options.slidesToShow &&
+			 !_.options.infinite ) {
 
 				 var $prevArrow = _.$prevArrow[0],
 					 $nextArrow = _.$nextArrow[0];
@@ -2935,11 +2935,11 @@ Website: http://kenwheeler.github.io
 	// Equivalent to jQuery.is() method
 	Slick.prototype.matches = function(el, selector) {
 		return (el instanceof HTMLElement) ? (el.matches
-				|| el.matchesSelector
-				|| el.msMatchesSelector
-				|| el.mozMatchesSelector
-				|| el.webkitMatchesSelector
-				|| el.oMatchesSelector)
+											  || el.matchesSelector
+											  || el.msMatchesSelector
+											  || el.mozMatchesSelector
+											  || el.webkitMatchesSelector
+											  || el.oMatchesSelector)
 			.call(el, selector) : false;
 	};
 
@@ -2951,63 +2951,63 @@ Website: http://kenwheeler.github.io
 	Slick.prototype.getClosest = function(el, selector) {
 		// Variables
 		var initEl = el;
-        var firstChar = selector.charAt(0);
-        var supports = 'classList' in document.documentElement;
-        var attribute, value;
+		var firstChar = selector.charAt(0);
+		var supports = 'classList' in document.documentElement;
+		var attribute, value;
 
-        // If selector is a data attribute, split attribute from value
-        if (firstChar === '[') {
-            selector = selector.substr(1, selector.length - 2);
-            attribute = selector.split('=');
+		// If selector is a data attribute, split attribute from value
+		if (firstChar === '[') {
+			selector = selector.substr(1, selector.length - 2);
+			attribute = selector.split('=');
 
-            if (attribute.length > 1) {
-                value = true;
-                attribute[1] = attribute[1].replace(/"/g, '').replace(/'/g, '');
-            }
-        }
+			if (attribute.length > 1) {
+				value = true;
+				attribute[1] = attribute[1].replace(/"/g, '').replace(/'/g, '');
+			}
+		}
 
-        // Get closest match
-        for (; el && el !== document && el.nodeType === 1; el = el.parentNode) {
-            // If selector is a class
-            if (firstChar === '.') {
-                if (supports) {
-                    if (el.classList.contains(selector.substr(1))) {
-                        return el;
-                    }
-                } else {
-                    if (new RegExp('(^|\\s)' + selector.substr(1) + '(\\s|$)').test(el.className)) {
-                        return el;
-                    }
-                }
-            }
+		// Get closest match
+		for (; el && el !== document && el.nodeType === 1; el = el.parentNode) {
+			// If selector is a class
+			if (firstChar === '.') {
+				if (supports) {
+					if (el.classList.contains(selector.substr(1))) {
+						return el;
+					}
+				} else {
+					if (new RegExp('(^|\\s)' + selector.substr(1) + '(\\s|$)').test(el.className)) {
+						return el;
+					}
+				}
+			}
 
-            // If selector is an ID
-            if (firstChar === '#') {
-                if (el.id === selector.substr(1)) {
-                    return el;
-                }
-            }
+			// If selector is an ID
+			if (firstChar === '#') {
+				if (el.id === selector.substr(1)) {
+					return el;
+				}
+			}
 
-            // If selector is a data attribute
-            if (firstChar === '[') {
-                if (el.hasAttribute(attribute[0])) {
-                    if (value) {
-                        if (el.getAttribute(attribute[0]) === attribute[1]) {
-                            return el;
-                        }
-                    } else {
-                        return el;
-                    }
-                }
-            }
+			// If selector is a data attribute
+			if (firstChar === '[') {
+				if (el.hasAttribute(attribute[0])) {
+					if (value) {
+						if (el.getAttribute(attribute[0]) === attribute[1]) {
+							return el;
+						}
+					} else {
+						return el;
+					}
+				}
+			}
 
-            // If selector is a tag
+			// If selector is a tag
 			if (el.tagName.toLowerCase() === selector) {
-                return el;
-            }
-        }
+				return el;
+			}
+		}
 
-        return initEl;
+		return initEl;
 	};
 
 	// @param  {Node} `el` The base element
@@ -3025,8 +3025,8 @@ Website: http://kenwheeler.github.io
 	// @param  {String} `eventType` The event type or name
 	// @param  {Object} `eventData` The detail property. Data associated with the event
 	// @usage : Slick.triggerEvent(element, 'mousedown', [myBigFatData, 'Hello Goodbye!']);
-    Slick.prototype.triggerEvent = function(el, eventType, eventData) {
-        var _customEvent;
+	Slick.prototype.triggerEvent = function(el, eventType, eventData) {
+		var _customEvent;
 
 		if (window.CustomEvent) {
 			_customEvent = new CustomEvent(eventType, {detail: eventData});
