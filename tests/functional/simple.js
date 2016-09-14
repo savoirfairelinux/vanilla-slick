@@ -71,6 +71,35 @@ define(function (require) {
                 });
         },
 
+        'slideSync': function () {
+            var arrayEqual = function(arrayText){
+                return !!arrayText.reduce(function(a, b){ return (a === b) ? a : NaN; })
+            };
+            return this.remote
+                .get(require.toUrl('src/sample/index.html'))
+                .setFindTimeout(5000)
+
+                .findAllByCssSelector('#slideSync .slider .slick-current')
+                .getVisibleText()
+                .then(function (arrayText) {
+                    assert.isOk(arrayEqual(arrayText),
+                        'Slide current should same at begining - [' + arrayText + ']');
+                })
+                .end()
+                .findByCssSelector('#slideSync .slider-nav .slick-next.slick-arrow')
+                    .click()
+                    .end()
+                .sleep(300)
+                .findAllByCssSelector('#slideSync .slider .slick-current')
+                .getVisibleText()
+                .then(function (arrayText) {
+                    assert.isOk(arrayEqual(arrayText),
+                        'Slide current should be synced - [' + arrayText + ']');
+                })
+                .end();
+        },
+
+
 
 
 //        'fail': function () {
