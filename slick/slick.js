@@ -582,40 +582,36 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	Slick.prototype.buildRows = function() {
 
-		var _ = this, a, b, c, newSlides, numOfSlides, originalSlides,slidesPerSection;
+		var _ = this, a, b, c, newSlides, numOfSlides, originalSlides, slidesPerSection;
 
 		newSlides = document.createDocumentFragment();
-		originalSlides = _.$slider.children();
+		originalSlides = [].slice.call(_.$slider.get(0).children);
 
 		if(_.options.rows > 1) {
-
 			slidesPerSection = _.options.slidesPerRow * _.options.rows;
-			numOfSlides = Math.ceil(
-				originalSlides.length / slidesPerSection
-			);
-
+			numOfSlides = Math.ceil(originalSlides.length / slidesPerSection);
 			for(a = 0; a < numOfSlides; a++){
 				var slide = document.createElement('div');
 				for(b = 0; b < _.options.rows; b++) {
 					var row = document.createElement('div');
 					for(c = 0; c < _.options.slidesPerRow; c++) {
 						var target = (a * slidesPerSection + ((b * _.options.slidesPerRow) + c));
-						if (originalSlides.get(target)) {
-							row.appendChild(originalSlides.get(target));
+						if (originalSlides[target]) {
+							row.appendChild(originalSlides[target]);
 						}
 					}
 					slide.appendChild(row);
 				}
 				newSlides.appendChild(slide);
 			}
+			var vanilla$slider = _.$slider.get();
+			vanilla$slider[0].innerHTML = '';
+			vanilla$slider[0].appendChild(newSlides);
 
-			_.$slider.empty().append(newSlides);
-			_.$slider.children().children().children()
-				.css({
-					'width':(100 / _.options.slidesPerRow) + '%',
-					'display': 'inline-block'
-				});
-
+			[].forEach.call(originalSlides[0], function(children) {
+				children.style.width = (100 / _.options.slidesPerRow) + '%';
+				children.style.display = 'inline-block';
+			});
 		}
 
 	};
@@ -1026,21 +1022,27 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		var _ = this;
 
+
 		if (filter !== null) {
 
 			_.$slidesCache = _.$slides;
 
 			_.unload();
 
-			_.$slideTrack.children(this.options.slide).detach();
+			_.filterNodeUtil(_.$slideTrack.get(0).children, _.options.slide).forEach(function(elem){
+				_.$slideTrack.get(0).removeChild(elem);
+			});
 
-			_.$slidesCache.filter(filter).appendTo(_.$slideTrack);
+			_.filterNodeUtil(_.$slidesCache.get(), filter).forEach(function(elem){
+				_.$slideTrack.get(0).appendChild(elem);
+			});
 
 			_.reinit();
 
 		}
 
 	};
+
 
 	Slick.prototype.focusHandler = function() {
 		var _ = this;
@@ -1087,6 +1089,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 			}
 		} else if (_.options.centerMode === true) {
 			pagerQty = _.slideCount;
+		} else if(!_.options.asNavFor) {
+            pagerQty = 1 + Math.ceil((_.slideCount - _.options.slidesToShow) / _.options.slidesToScroll);
 		} else {
 			while (breakPoint < _.slideCount) {
 				++pagerQty;
@@ -2928,6 +2932,9 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	};
 
+	// Slick utils
+	// ===========
+
 	// @param {Object} `out`
 	// @return {Object} `out`
 	// @usage Slick.extend({}, objA, objB);
@@ -2948,6 +2955,41 @@ Issues: http://github.com/kenwheeler/slick/issues
 		}
 
 		return out;
+	};
+
+	// @param  {Array}|{NodeList} `collectionOfNode` A collection of node to filter
+	// @param  {function}|{cssSelector}|{Node} `filter` The filter param
+	// @return {Array} of HTMLElement filtred by `filter`
+	// @usage Slick.filterNodeUtil(collectionOfNode, (funtion(elem,index,array){...} | '.my-selector' | node) );
+	// Equivalent to jQuery.filter() method, BUT do not support extended jQuery selector https://api.jquery.com/category/selectors/jquery-selector-extensions/
+	Slick.prototype.filterNodeUtil = function(collectionOfNode, filter) {
+		var _ = this,
+			domParent = document.createElement("div"),
+			filterFunction;
+
+		if (typeof filter === "string" && filter) {
+			Array.prototype.forEach.call(collectionOfNode, function(elem) {
+				if (elem.parentNode === null) { // Needed for matches, if collectionOfNode is out the DOM
+					domParent.appendChild(elem);
+				}
+			});
+			filterFunction = function(elem) {
+				return _.matches(elem, filter)
+			};
+		} else if (filter instanceof HTMLElement) {
+			filterFunction = function(elem) {
+				return filter === elem;
+			};
+		} else if (typeof filter === "function") {
+			filterFunction = filter;
+		} else {
+			filterFunction = function() {
+				return true;
+			};
+		}
+
+		return Array.prototype.filter.call(collectionOfNode, filterFunction);
+
 	};
 
 	// @param  {Node} `el` The base element

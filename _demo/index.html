@@ -13,7 +13,7 @@
     </head>
     <body>
         <main>
-            <section id="features" class="blue">                
+            <section id="features" class="blue">
 			    <div class="content">
 				    <h2>Features</h2>
 				    <ul class="features">
@@ -28,7 +28,7 @@
 					    <li>Autoplay, dots, arrows, callbacks, etc...</li>
 				    </ul>
 				    <hr id="demos"/>
-				    <h2>Single Item</h2>
+            <h2>Single Item</h2>
 				    <div class="slider single-item">
 					    <div><h3>1</h3></div>
 					    <div><h3>2</h3></div>
@@ -39,6 +39,26 @@
 				    </div>
 				    <pre><code class="language-javascript">
 $('.single-item').slick();
+				    </code></pre>
+				    <hr/>
+            <h2>Rows Item</h2>
+				    <div class="slider rows-item">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+				    </div>
+				    <pre><code class="language-javascript">
+              $('.rows-item').slick({
+                    dots: true,
+                    infinite: true,
+                    speed: 500,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    rows: 2
+                });
 				    </code></pre>
 				    <hr/>
 				    <h2>Multiple Items</h2>
