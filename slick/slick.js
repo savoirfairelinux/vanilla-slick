@@ -1003,21 +1003,27 @@
 
 		var _ = this;
 
+
 		if (filter !== null) {
 
 			_.$slidesCache = _.$slides;
 
 			_.unload();
 
-			_.$slideTrack.children(this.options.slide).detach();
+			_.filterNodeUtil(_.$slideTrack.get(0).children, _.options.slide).forEach(function(elem){
+				_.$slideTrack.get(0).removeChild(elem);
+			});
 
-			_.$slidesCache.filter(filter).appendTo(_.$slideTrack);
+			_.filterNodeUtil(_.$slidesCache.get(), filter).forEach(function(elem){
+				_.$slideTrack.get(0).appendChild(elem);
+			});
 
 			_.reinit();
 
 		}
 
 	};
+
 
 	Slick.prototype.focusHandler = function() {
 		var _ = this;
@@ -2908,6 +2914,9 @@
 
 	};
 
+	// Slick utils
+	// ===========
+
 	// @param {Object} `out`
 	// @return {Object} `out`
 	// @usage Slick.extend({}, objA, objB);
@@ -2928,6 +2937,41 @@
 		}
 
 		return out;
+	};
+
+	// @param  {Array}|{NodeList} `collectionOfNode` A collection of node to filter
+	// @param  {function}|{cssSelector}|{Node} `filter` The filter param
+	// @return {Array} of HTMLElement filtred by `filter`
+	// @usage Slick.filterNodeUtil(collectionOfNode, (funtion(elem,index,array){...} | '.my-selector' | node) );
+	// Equivalent to jQuery.filter() method, BUT do not support extended jQuery selector https://api.jquery.com/category/selectors/jquery-selector-extensions/
+	Slick.prototype.filterNodeUtil = function(collectionOfNode, filter) {
+		var _ = this,
+			domParent = document.createElement("div"),
+			filterFunction;
+
+		if (typeof filter === "string" && filter) {
+			Array.prototype.forEach.call(collectionOfNode, function(elem) {
+				if (elem.parentNode === null) { // Needed for matches, if collectionOfNode is out the DOM
+					domParent.appendChild(elem);
+				}
+			});
+			filterFunction = function(elem) {
+				return _.matches(elem, filter)
+			};
+		} else if (filter instanceof HTMLElement) {
+			filterFunction = function(elem) {
+				return filter === elem;
+			};
+		} else if (typeof filter === "function") {
+			filterFunction = filter;
+		} else {
+			filterFunction = function() {
+				return true;
+			};
+		}
+
+		return Array.prototype.filter.call(collectionOfNode, filterFunction);
+
 	};
 
 	// @param  {Node} `el` The base element
