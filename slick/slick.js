@@ -690,7 +690,7 @@
 		var $target = event.currentTarget || false;
 		var indexOffset;
 		var slideOffset;
-		var unevenOffset;		
+		var unevenOffset;
 
 		// If target is a link, prevent default action.
 		if(_.matches($target,'a')) {
@@ -698,7 +698,7 @@
 		}
 
 		// If target is not the <li> element (ie: a child), find the <li>.
-		if(!_.matches($target,'li')) {			
+		if(!_.matches($target,'li')) {
 			$target = _.getClosest($target, 'li');
 		}
 
@@ -2364,7 +2364,7 @@
 		var _ = this;
 		var targetElement = _.matches($(event.target)[0],'.slick-slide') ? $(event.target) : $(event.target).parents('.slick-slide');
 		var index = parseInt(targetElement.attr('data-slick-index'));
-		
+
 		if (!index) index = 0;
 
 		if (_.slideCount <= _.options.slidesToShow) {
