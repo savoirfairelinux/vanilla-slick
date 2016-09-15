@@ -946,19 +946,26 @@ Issues: http://github.com/kenwheeler/slick/issues
         var _ = this;
         var _slides = _.$slides.get();//For vanilla
 
-		//_.cssTransitions = false; // tmp for vanilla
+		_.cssTransitions = false; // tmp for vanilla
 
 		if (_.cssTransitions === false) {
-
+			
             _slides[slideIndex].style.zindex = _.options.zIndex
 
             /*_.$slides.eq(slideIndex).animate({
                 opacity: 1
             }, _.options.speed, _.options.easing, callback);*/ //Original slick function.
+
+			/* my first take on it:
 			_slides[slideIndex].style.transitionProperty = "opacity";
 			_slides[slideIndex].style.transitionDuration = _.options.speed / 1000 + "s";
 			_slides[slideIndex].style.transitionEasing = _.options.easing;
 			_slides[slideIndex].style.opacity = "1";
+			callback();*/
+			
+			var s = _slides[slideIndex].style;
+			s.opacity = 0;
+			(function fade(){console.log('s',s.opacity);(s.opacity+=.1)>1?s.display="block":setTimeout(fade,40)})();
 			callback();
 
 		} else {
