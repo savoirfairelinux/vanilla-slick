@@ -27,6 +27,11 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 }(function($) {
 	'use strict';
+	var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;//todo place elsewhere
+
+	var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;//todo place elsewhere
+
 	var Slick = window.Slick || {};
 
 	Slick = (function() {
@@ -955,22 +960,27 @@ Issues: http://github.com/kenwheeler/slick/issues
             }, _.options.speed, _.options.easing, callback);*/ //Original slick function.
 
 			var start = null;
-			var anim;
+			var frameID;
 			var s = _slides[slideIndex];
 			var start = Date.now();
 
 			function fadeSlideAnimation() {
+				console.log('enter func');
 				var time = Date.now() - start;
 				var progress = time / _.options.speed;
 
 				s.style.opacity = progress;
-				anim = requestAnimationFrame(fadeSlideAnimation);
 				if ( progress >= 1){
-					cancelAnimationFrame(anim);
+					cancelAnimationFrame(frameID);
+					console.log('Canceled animFadeSlide');
+					console.log('frameID', frameID);
+					return;
 				}
+				frameID = requestAnimationFrame(fadeSlideAnimation);
 			}
 
-			anim = requestAnimationFrame(fadeSlideAnimation);
+			frameID = requestAnimationFrame(fadeSlideAnimation);
+			console.log('Exit frameID', frameID);
 			callback.call();
 
 			} else {
@@ -1007,21 +1017,22 @@ Issues: http://github.com/kenwheeler/slick/issues
 			//	zIndex: _.options.zIndex - 2
 			//}, _.options.speed, _.options.easing);
 			var start = null;
-			var anim;
+			var frameIDfadeOut;
 			var s = _slides[slideIndex];
 			var start = Date.now();
 
 			function fadeOutAnimation() {
+				console.log('fadeOutAnimation');
 				var time = Date.now() - start;
 				var progress = 1 - (time / _.options.speed);
-				progress = 1 - progress;
 				s.style.opacity = progress;
-				anim = requestAnimationFrame(fadeOutAnimation);
 				if ( progress <= 0){
-					cancelAnimationFrame(anim);
+					cancelAnimationFrame(frameIDfadeOut);
+					return;
 				}
+				frameIDfadeOut = requestAnimationFrame(fadeOutAnimation);
 			}
-			anim = requestAnimationFrame(fadeOutAnimation);
+			frameIDfadeOut = requestAnimationFrame(fadeOutAnimation);
 
 
 		} else {
