@@ -81,7 +81,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 				swipeToSlide: false,
 				touchMove: true,
 				touchThreshold: 5,
-				useCSS: true,
+				useCSS: false, // todo change before MR, for testing only
 				useTransform: true,
 				variableWidth: false,
 				vertical: false,
@@ -946,8 +946,6 @@ Issues: http://github.com/kenwheeler/slick/issues
         var _ = this;
         var _slides = _.$slides.get();//For vanilla
 
-		_.cssTransitions = false; // tmp for vanilla
-
 		if (_.cssTransitions === false) {
 			
             _slides[slideIndex].style.zindex = _.options.zIndex
@@ -956,47 +954,38 @@ Issues: http://github.com/kenwheeler/slick/issues
                 opacity: 1
             }, _.options.speed, _.options.easing, callback);*/ //Original slick function.
 
-			/* my first take on it:
-			_slides[slideIndex].style.transitionProperty = "opacity";
-			_slides[slideIndex].style.transitionDuration = _.options.speed / 1000 + "s";
-			_slides[slideIndex].style.transitionEasing = _.options.easing;
-			_slides[slideIndex].style.opacity = "1";
-			callback();*/
-			
-			//console.log('s', s);
+			var start = null;
 			var anim;
-			var val = 0;
 			var s = _slides[slideIndex];
+			var start = Date.now();
+
 			function fadeSlideAnimation() {
-				val += 0.125;
-				//console.log('s inside function', s);
-				
-				s.style.opacity = val;
-				console.log('val', val);
+				var time = Date.now() - start;
+				var progress = time / _.options.speed;
+
+				s.style.opacity = progress;
 				anim = requestAnimationFrame(fadeSlideAnimation);
-				if (val >= 1){
+				if ( progress >= 1){
 					cancelAnimationFrame(anim);
 				}
 			}
-			s.style.opacity = val;
+
 			anim = requestAnimationFrame(fadeSlideAnimation);
-			//anim = requestAnimationFrame(_.anim(s,'opacity', 1, _.options.speed, _.options.easing, callback));
-			//(function fade(){console.log('s',s.opacity);(s.opacity+=.1)>1?s.display="block":setTimeout(fade,40)})();
-			callback();
+			callback.call();
 
-		} else {
+			} else {
 
-			_.applyTransition(slideIndex);
+				_.applyTransition(slideIndex);
 
-			_.$slides.eq(slideIndex).css({
-				opacity: 1,
-				zIndex: _.options.zIndex
-			});
+				_.$slides.eq(slideIndex).css({
+					opacity: 1,
+					zIndex: _.options.zIndex
+				});
 
-			if (callback) {
-				setTimeout(function() {
+				if (callback) {
+					setTimeout(function() {
 
-					_.disableTransition(slideIndex);
+						_.disableTransition(slideIndex);
 
 					callback.call();
 				}, _.options.speed);
@@ -1009,13 +998,31 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.fadeSlideOut = function(slideIndex) {
 
 		var _ = this;
+        var _slides = _.$slides.get();//For vanilla
 
 		if (_.cssTransitions === false) {
+			//console.log('fadeSlideOut');
+			//_.$slides.eq(slideIndex).animate({
+			//	opacity: 0,
+			//	zIndex: _.options.zIndex - 2
+			//}, _.options.speed, _.options.easing);
+			var start = null;
+			var anim;
+			var s = _slides[slideIndex];
+			var start = Date.now();
 
-			_.$slides.eq(slideIndex).animate({
-				opacity: 0,
-				zIndex: _.options.zIndex - 2
-			}, _.options.speed, _.options.easing);
+			function fadeOutAnimation() {
+				var time = Date.now() - start;
+				var progress = 1 - (time / _.options.speed);
+				progress = 1 - progress;
+				s.style.opacity = progress;
+				anim = requestAnimationFrame(fadeOutAnimation);
+				if ( progress <= 0){
+					cancelAnimationFrame(anim);
+				}
+			}
+			anim = requestAnimationFrame(fadeOutAnimation);
+
 
 		} else {
 
@@ -3029,28 +3036,6 @@ Issues: http://github.com/kenwheeler/slick/issues
 	//next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
 	Slick.prototype.queryAll = function (expr, container) {
 		return Array.prototype.slice.call((container || document).querySelectorAll(expr));
-	}
-
-	//Slick.prototype.anim = function(el, property, value, speed, easing, callback) {
-	Slick.prototype.anim = function() {
-		// Request Animation Frame
-
-		console.log('s:', s);
-		console.log('el.style[property]:', el.style[property]);
-		console.log('property:', property);
-		console.log('value:', value);
-		console.log('speed:', speed);
-		console.log('easing:', easing);
-		console.log('callback:', callback);
-		currentValue = currentValue += 0.1;
-		console.log('this:', this);
-		console.log('this.anim:', this.anim);
-
-		if (currentValue <= value) {
-			console.log('currentValue:', currentValue);
-			el.style[property] = currentValue;
-			//requestAnimationFrame(Slick.prototype.anim(el, property, value, speed, easing, callback));
-		}
 	}
 
 	$.fn.slick = function() {
