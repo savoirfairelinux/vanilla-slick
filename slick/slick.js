@@ -27,10 +27,6 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 }(function($) {
 	'use strict';
-	var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                            window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;//todo place elsewhere
-
-	var cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;//todo place elsewhere
 
 	var Slick = window.Slick || {};
 
@@ -86,7 +82,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 				swipeToSlide: false,
 				touchMove: true,
 				touchThreshold: 5,
-				useCSS: false, // todo change before MR, for testing only
+				useCSS: true,
 				useTransform: true,
 				variableWidth: false,
 				vertical: false,
@@ -947,17 +943,13 @@ Issues: http://github.com/kenwheeler/slick/issues
 	};
 
 	Slick.prototype.fadeSlide = function(slideIndex, callback) {
-
+		// TODO easing on animations, polyfill for requestAnimationFrame()
         var _ = this;
-        var _slides = _.$slides.get();//For vanilla
+        var _slides = _.$slides.get();
 
 		if (_.cssTransitions === false) {
 			
             _slides[slideIndex].style.zindex = _.options.zIndex
-
-            /*_.$slides.eq(slideIndex).animate({
-                opacity: 1
-            }, _.options.speed, _.options.easing, callback);*/ //Original slick function.
 
 			var start = null;
 			var frameID;
@@ -965,22 +957,19 @@ Issues: http://github.com/kenwheeler/slick/issues
 			var start = Date.now();
 
 			function fadeSlideAnimation() {
-				console.log('enter func');
 				var time = Date.now() - start;
 				var progress = time / _.options.speed;
-
+				progress = _.EasingFunctions[_.options.easing](progress);
+				if (progress > 1){progress = 1;};
 				s.style.opacity = progress;
 				if ( progress >= 1){
 					cancelAnimationFrame(frameID);
-					console.log('Canceled animFadeSlide');
-					console.log('frameID', frameID);
 					return;
 				}
 				frameID = requestAnimationFrame(fadeSlideAnimation);
 			}
 
 			frameID = requestAnimationFrame(fadeSlideAnimation);
-			console.log('Exit frameID', frameID);
 			callback.call();
 
 			} else {
@@ -1006,23 +995,17 @@ Issues: http://github.com/kenwheeler/slick/issues
 	};
 
 	Slick.prototype.fadeSlideOut = function(slideIndex) {
-
+		// TODO easing on animations, polyfill for requestAnimationFrame()
 		var _ = this;
-        var _slides = _.$slides.get();//For vanilla
+        var _slides = _.$slides.get();
 
 		if (_.cssTransitions === false) {
-			//console.log('fadeSlideOut');
-			//_.$slides.eq(slideIndex).animate({
-			//	opacity: 0,
-			//	zIndex: _.options.zIndex - 2
-			//}, _.options.speed, _.options.easing);
 			var start = null;
 			var frameIDfadeOut;
 			var s = _slides[slideIndex];
 			var start = Date.now();
 
 			function fadeOutAnimation() {
-				console.log('fadeOutAnimation');
 				var time = Date.now() - start;
 				var progress = 1 - (time / _.options.speed);
 				s.style.opacity = progress;
