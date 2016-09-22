@@ -203,7 +203,9 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	Slick.prototype.addSlide = Slick.prototype.slickAdd = function(markup, index, addBefore) {
 
-		var _ = this;
+		var _ = this,
+			$slideTrack = _.$slideTrack.get(0), // TODO remove .get(0) in future
+			$slides = Array.prototype.slice.call(_.$slides.get()); // TODO remove .get() in future (maybe the array converter too)
 
 		if (typeof(index) === 'boolean') {
 			addBefore = index;
@@ -214,33 +216,46 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		_.unload();
 
+		// Convert markup to an HTMLElement
+		if (!(markup instanceof HTMLElement)) {
+			var tempNode = document.createElement('div');
+			tempNode.innerHTML = markup;
+			markup = tempNode.children[0];
+		}
+
 		if (typeof(index) === 'number') {
 			if (index === 0 && _.$slides.length === 0) {
-				$(markup).appendTo(_.$slideTrack);
+				$slideTrack.appendChild(markup);
 			} else if (addBefore) {
-				$(markup).insertBefore(_.$slides.eq(index));
+				$slideTrack.insertBefore(markup, $slides[index]);
 			} else {
-				$(markup).insertAfter(_.$slides.eq(index));
+				$slideTrack.insertBefore(markup, $slides[index].nextSibling);
 			}
 		} else {
 			if (addBefore === true) {
-				$(markup).prependTo(_.$slideTrack);
+				$slideTrack.insertBefore(markup, $slideTrack.firstChild);
 			} else {
-				$(markup).appendTo(_.$slideTrack);
+				$slideTrack.appendChild(markup);
 			}
 		}
 
-		_.$slides = _.$slideTrack.children(this.options.slide);
 
-		_.$slideTrack.children(this.options.slide).detach();
+		$slides = _.filterNodeUtil($slideTrack.children, _.options.slide); // Save slides
 
-		_.$slideTrack.append(_.$slides);
+		$slides.forEach(function(elem) {
+			$slideTrack.removeChild(elem);
+		}); // (Detach) each slide from slideTrack
 
-		_.$slides.each(function(index, element) {
-			$(element).attr('data-slick-index', index);
+		$slides.forEach(function(elem) {
+			$slideTrack.appendChild(elem);
+		}); // Append each slide on slideTrack
+
+		$slides.forEach(function(elem, index) {
+			elem.setAttribute('data-slick-index', index);
 		});
 
-		_.$slidesCache = _.$slides;
+		_.$slidesCache = _.$slides = $($slides); // TODO remove $() in future
+		_.$slideTrack = $($slideTrack); // TODO remove $() in future
 
 		_.reinit();
 
@@ -1035,21 +1050,27 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		var _ = this;
 
+
 		if (filter !== null) {
 
 			_.$slidesCache = _.$slides;
 
 			_.unload();
 
-			_.$slideTrack.children(this.options.slide).detach();
+			_.filterNodeUtil(_.$slideTrack.get(0).children, _.options.slide).forEach(function(elem){
+				_.$slideTrack.get(0).removeChild(elem);
+			});
 
-			_.$slidesCache.filter(filter).appendTo(_.$slideTrack);
+			_.filterNodeUtil(_.$slidesCache.get(), filter).forEach(function(elem){
+				_.$slideTrack.get(0).appendChild(elem);
+			});
 
 			_.reinit();
 
 		}
 
 	};
+
 
 	Slick.prototype.focusHandler = function() {
 		var _ = this;
@@ -2939,6 +2960,9 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	};
 
+	// Slick utils
+	// ===========
+
 	// @param {Object} `out`
 	// @return {Object} `out`
 	// @usage Slick.extend({}, objA, objB);
@@ -2959,6 +2983,41 @@ Issues: http://github.com/kenwheeler/slick/issues
 		}
 
 		return out;
+	};
+
+	// @param  {Array}|{NodeList} `collectionOfNode` A collection of node to filter
+	// @param  {function}|{cssSelector}|{Node} `filter` The filter param
+	// @return {Array} of HTMLElement filtred by `filter`
+	// @usage Slick.filterNodeUtil(collectionOfNode, (funtion(elem,index,array){...} | '.my-selector' | node) );
+	// Equivalent to jQuery.filter() method, BUT do not support extended jQuery selector https://api.jquery.com/category/selectors/jquery-selector-extensions/
+	Slick.prototype.filterNodeUtil = function(collectionOfNode, filter) {
+		var _ = this,
+			domParent = document.createElement("div"),
+			filterFunction;
+
+		if (typeof filter === "string" && filter) {
+			Array.prototype.forEach.call(collectionOfNode, function(elem) {
+				if (elem.parentNode === null) { // Needed for matches, if collectionOfNode is out the DOM
+					domParent.appendChild(elem);
+				}
+			});
+			filterFunction = function(elem) {
+				return _.matches(elem, filter)
+			};
+		} else if (filter instanceof HTMLElement) {
+			filterFunction = function(elem) {
+				return filter === elem;
+			};
+		} else if (typeof filter === "function") {
+			filterFunction = filter;
+		} else {
+			filterFunction = function() {
+				return true;
+			};
+		}
+
+		return Array.prototype.filter.call(collectionOfNode, filterFunction);
+
 	};
 
 	// @param  {Node} `el` The base element
