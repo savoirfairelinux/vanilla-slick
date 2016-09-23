@@ -2797,16 +2797,13 @@
 
 			_.unload();
 
-			var slidesToDetach = Array.prototype.slice.call(_slideTrack.children);
-
-			if (this.options.slide) {
-				var allChildrens = _.queryAll(this.options.slide, _slideTrack);
-				slidesToDetach = slidesToDetach.filter(function(e) { return allChildrens.lastIndexOf(e) >= 0; });
-			}
+			var slidesToDetach = _.filterNodeUtil(_slideTrack.children, _.options.slide)
 
 			slidesToDetach.forEach(function(elem) { _slideTrack.removeChild(elem); });
 
-			_slideTrack.innerHTML = _slidesCache.map(function(e) { return e.outerHTML}).join('');
+			_slidesCache.forEach(function(elem) {
+				_slideTrack.appendChild(elem);
+			});
 
 			_.reinit();
 
