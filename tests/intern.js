@@ -50,8 +50,8 @@ define({
 	//suites: [ 'tests/unit/sample' ],
 
 	// Functional test suite(s) to execute against each browser once non-functional tests are completed
-	functionalSuites: [ 'tests/functional/simple' ],
+	functionalSuites: [ 'tests/functional/*' ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^(?:tests|node_modules)\//
+	excludeInstrumentation: /^(?:tests|node_modules|src\/common)\//
 });
