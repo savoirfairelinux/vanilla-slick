@@ -1,19 +1,20 @@
 /*
-     _ _      _       _
-___| (_) ___| | __  (_)___
-/ __| | |/ __| |/ /  | / __|
-\__ \ | | (__|   < _ | \__ \
-|___/_|_|\___|_|\_(_)/ |___/
-                   |__/
+ _ _	  _		  _
+ ___| (_) ___| | __	 (_)___
+ / __| | |/ __| |/ /  | / __|
+ \__ \ | | (__|	  < _ | \__ \
+ |___/_|_|\___|_|\_(_)/ |___/
+ |__/
 
-Version: 1.5.9
-Author: Ken Wheeler
-Website: http://kenwheeler.github.io
-	Docs: http://kenwheeler.github.io/slick
-	Repo: http://github.com/kenwheeler/slick
-Issues: http://github.com/kenwheeler/slick/issues
+ Version: 1.5.9
+ Author: Ken Wheeler
+ Author: Ken Wheeler
+ Website: http://kenwheeler.github.io
+ Docs: http://kenwheeler.github.io/slick
+ Repo: http://github.com/kenwheeler/slick
+ Issues: http://github.com/kenwheeler/slick/issues
 
-*/
+ */
 /* global window, document, define, jQuery, setInterval, clearInterval */
 (function(factory) {
 	'use strict';
@@ -174,11 +175,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 			// Strict HTML recognition (must start with <)
 			// Extracted from jQuery v1.11 source
 			_.htmlExpr = /^(?:\s*(<[\w\W]+>)[^>]*)$/;
-
-
 			_.registerBreakpoints();
 			_.init(true);
-
 		}
 
 		return Slick;
@@ -358,12 +356,12 @@ Issues: http://github.com/kenwheeler/slick/issues
 		var _ = this,
 			asNavFor = _.options.asNavFor;
 
-        if ( asNavFor && asNavFor !== null ) {
-    		asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
-    			return elem !== _.$slider.get(0);
-    		});
-    		asNavFor = $(asNavFor);
-    	}
+		if ( asNavFor && asNavFor !== null ) {
+			asNavFor = _.queryAll(asNavFor).filter(function(elem, index, array){
+				return elem !== _.$slider.get(0);
+			});
+			asNavFor = $(asNavFor);
+		}
 
 		return asNavFor;
 	};
@@ -389,7 +387,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 		var _ = this;
 
 		if (_.options.fade === false) {
-			_.$slideTrack.get(0).style[_.transitionType] =  _.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
+			_.$slideTrack.get(0).style[_.transitionType] =	_.transformType + ' ' + _.options.speed + 'ms ' + _.options.cssEase;
 		} else {
 			_.$slides.get()[slide].style[_.transitionType] = 'opacity ' + _.options.speed + 'ms ' + _.options.cssEase;
 		}
@@ -534,8 +532,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		_.$slides =
 			_.$slider
-				.children( _.options.slide + ':not(.slick-cloned)')
-				.addClass('slick-slide');
+			.children( _.options.slide + ':not(.slick-cloned)')
+			.addClass('slick-slide');
 
 		_.slideCount = _.$slides.length;
 
@@ -630,8 +628,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 		}
 
 		if ( _.options.responsive &&
-			_.options.responsive.length &&
-			_.options.responsive !== null) {
+			 _.options.responsive.length &&
+			 _.options.responsive !== null) {
 
 			targetBreakpoint = null;
 
@@ -658,8 +656,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 							_.unslick(targetBreakpoint);
 						} else {
 							_.options = _.extend({}, _.originalSettings,
-								_.breakpointSettings[
-									targetBreakpoint]);
+												 _.breakpointSettings[
+													 targetBreakpoint]);
 							if (initial === true) {
 								_.currentSlide = _.options.initialSlide;
 							}
@@ -673,8 +671,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 						_.unslick(targetBreakpoint);
 					} else {
 						_.options = _.extend({}, _.originalSettings,
-							_.breakpointSettings[
-								targetBreakpoint]);
+											 _.breakpointSettings[
+												 targetBreakpoint]);
 						if (initial === true) {
 							_.currentSlide = _.options.initialSlide;
 						}
@@ -696,14 +694,13 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 			// only trigger breakpoints during an actual break. not on initialize.
 			if( !initial && triggerBreakpoint !== false ) {
-				_.$slider.trigger('breakpoint', [_, triggerBreakpoint]);
+				_.triggerEvent(_.$slider.get(0), 'breakpoint', [_, triggerBreakpoint]);
 			}
 		}
 
 	};
 
 	Slick.prototype.changeSlide = function(event, dontAnimate) {
-
 		var _ = this;
 		var $target = event.currentTarget || false;
 		var indexOffset;
@@ -720,41 +717,42 @@ Issues: http://github.com/kenwheeler/slick/issues
 			$target = _.getClosest($target, 'li');
 		}
 
+
 		unevenOffset = (_.slideCount % _.options.slidesToScroll !== 0);
 		indexOffset = unevenOffset ? 0 : (_.slideCount - _.currentSlide) % _.options.slidesToScroll;
 
 		switch (event.data.message) {
-		case 'previous':
-			slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
-			if (_.slideCount > _.options.slidesToShow) {
-				_.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
-			}
-			break;
+			case 'previous':
+				slideOffset = indexOffset === 0 ? _.options.slidesToScroll : _.options.slidesToShow - indexOffset;
+				if (_.slideCount > _.options.slidesToShow) {
+					_.slideHandler(_.currentSlide - slideOffset, false, dontAnimate);
+				}
+				break;
 
-		case 'next':
-			slideOffset = indexOffset === 0 ? _.options.slidesToScroll : indexOffset;
-			if (_.slideCount > _.options.slidesToShow) {
-				_.slideHandler(_.currentSlide + slideOffset, false, dontAnimate);
-			}
-			break;
+			case 'next':
+				slideOffset = indexOffset === 0 ? _.options.slidesToScroll : indexOffset;
+				if (_.slideCount > _.options.slidesToShow) {
+					_.slideHandler(_.currentSlide + slideOffset, false, dontAnimate);
+				}
+				break;
 
-		case 'index':
-			var index = event.data.index === 0 ? 0 : event.data.index || [].slice.call($target.parentNode.children).indexOf($target) * _.options.slidesToScroll;
-			var customTrigger = document.createEvent('HTMLEvents');
+			case 'index':
+				var index = event.data.index === 0 ? 0 : event.data.index || [].slice.call($target.parentNode.children).indexOf($target) * _.options.slidesToScroll;
+				var customTrigger = document.createEvent('HTMLEvents');
 
-			customTrigger.initEvent('focus', true, false);
+				customTrigger.initEvent('focus', true, false);
 
-			_.slideHandler(_.checkNavigable(index), false, dontAnimate);
+				_.slideHandler(_.checkNavigable(index), false, dontAnimate);
 
-            if($target){
-    			[].forEach.call($target.children, function(child) {
-    				child.dispatchEvent(customTrigger);
-    			} );
-            }
-			break;
+				if($target){
+					[].forEach.call($target.children, function(child) {
+						child.dispatchEvent(customTrigger);
+					} );
+				}
+				break;
 
-		default:
-			return;
+			default:
+				return;
 		}
 	};
 
@@ -1050,18 +1048,19 @@ Issues: http://github.com/kenwheeler/slick/issues
 			.on('focus.slick blur.slick',
 				'*:not(.slick-arrow)', function(event) {
 
-			event.stopImmediatePropagation();
-			var $sf = $(this);
+					event.stopImmediatePropagation();
+					var $sf = $(this);
 
-			setTimeout(function() {
-				if ( _.options.pauseOnFocus ) {
-					_.focussed = _.matches($sf[0],':focus');
-					_.autoPlay();
-				}
 
-			}, 0);
+					setTimeout(function() {
+						if ( _.options.pauseOnFocus ) {
+							_.focussed = _.matches($sf[0],':focus');
+							_.autoPlay();
+						}
 
-		});
+					}, 0);
+
+				});
 	};
 
 	Slick.prototype.getCurrent = Slick.prototype.slickCurrentSlide = function() {
@@ -1088,7 +1087,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 		} else if (_.options.centerMode === true) {
 			pagerQty = _.slideCount;
 		} else if(!_.options.asNavFor) {
-            pagerQty = 1 + Math.ceil((_.slideCount - _.options.slidesToShow) / _.options.slidesToScroll);
+			pagerQty = 1 + Math.ceil((_.slideCount - _.options.slidesToShow) / _.options.slidesToScroll);
 		} else {
 			while (breakPoint < _.slideCount) {
 				++pagerQty;
@@ -1296,7 +1295,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 		}
 
 		if (creation) {
-			_.$slider.trigger('init', [_]);
+			_.triggerEvent(_.$slider.get(0), 'init', [_]);
 		}
 
 		if (_.options.accessibility === true) {
@@ -1480,7 +1479,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 			if (event.keyCode === 37 && _.options.accessibility === true) {
 				_.changeSlide({
 					data: {
-						message: _.options.rtl === true ? 'next' :  'previous'
+						message: _.options.rtl === true ? 'next' :	'previous'
 					}
 				});
 			} else if (event.keyCode === 39 && _.options.accessibility === true) {
@@ -1564,13 +1563,13 @@ Issues: http://github.com/kenwheeler/slick/issues
 			cloneRange = _.$slider.find('.slick-slide');
 			loadImages(cloneRange);
 		} else
-		if (_.currentSlide >= _.slideCount - _.options.slidesToShow) {
-			cloneRange = _.$slider.find('.slick-cloned').slice(0, _.options.slidesToShow);
-			loadImages(cloneRange);
-		} else if (_.currentSlide === 0) {
-			cloneRange = _.$slider.find('.slick-cloned').slice(_.options.slidesToShow * -1);
-			loadImages(cloneRange);
-		}
+			if (_.currentSlide >= _.slideCount - _.options.slidesToShow) {
+				cloneRange = _.$slider.find('.slick-cloned').slice(0, _.options.slidesToShow);
+				loadImages(cloneRange);
+			} else if (_.currentSlide === 0) {
+				cloneRange = _.$slider.find('.slick-cloned').slice(_.options.slidesToShow * -1);
+				loadImages(cloneRange);
+			}
 
 	};
 
@@ -1835,8 +1834,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 		_.$slides =
 			_.$slideTrack
-				.children(_.options.slide)
-				.addClass('slick-slide');
+			.children(_.options.slide)
+			.addClass('slick-slide');
 
 		_.slideCount = _.$slides.length;
 
@@ -1998,7 +1997,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	Slick.prototype.setFade = function() {
 
-        var _ = this,
+		var _ = this,
 			targetLeft,
 			slidesArray = _.$slides.toArray();
 
@@ -2031,20 +2030,18 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 	};
 
-	Slick.prototype.setOption =
-	Slick.prototype.slickSetOption = function() {
-
+	Slick.prototype.setOption = Slick.prototype.slickSetOption = function() {
 		/**
 		 * accepts arguments in format of:
 		 *
-		 *  - for changing a single option's value:
-		 *     .slick("setOption", option, value, refresh )
+		 *	- for changing a single option's value:
+		 *	   .slick("setOption", option, value, refresh )
 		 *
-		 *  - for changing a set of responsive options:
-		 *     .slick("setOption", 'responsive', [{}, ...], refresh )
+		 *	- for changing a set of responsive options:
+		 *	   .slick("setOption", 'responsive', [{}, ...], refresh )
 		 *
-		 *  - for updating multiple values at once (not responsive)
-		 *     .slick("setOption", { 'option': value, ... }, refresh )
+		 *	- for updating multiple values at once (not responsive)
+		 *	   .slick("setOption", { 'option': value, ... }, refresh )
 		 */
 
 		var _ = this, l, item, option, value, refresh = false, type;
@@ -2349,7 +2346,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 				}
 
 				for (i = _.slideCount; i > (_.slideCount -
-						infiniteCount); i -= 1) {
+											infiniteCount); i -= 1) {
 					slideIndex = i - 1;
 					$(_.$slides[slideIndex]).clone(true).attr('id', '')
 						.attr('data-slick-index', slideIndex - _.slideCount)
@@ -2609,8 +2606,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 					slideCount =
 						_.options.swipeToSlide ?
-							_.checkNavigable( _.currentSlide + _.getSlideCount() ) :
-							_.currentSlide + _.getSlideCount();
+						_.checkNavigable( _.currentSlide + _.getSlideCount() ) :
+						_.currentSlide + _.getSlideCount();
 
 					_.currentDirection = 0;
 
@@ -2621,8 +2618,8 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 					slideCount =
 						_.options.swipeToSlide ?
-							_.checkNavigable( _.currentSlide - _.getSlideCount() ) :
-							_.currentSlide - _.getSlideCount();
+						_.checkNavigable( _.currentSlide - _.getSlideCount() ) :
+						_.currentSlide - _.getSlideCount();
 
 					_.currentDirection = 1;
 
@@ -2849,41 +2846,41 @@ Issues: http://github.com/kenwheeler/slick/issues
 		centerOffset = Math.floor(_.options.slidesToShow / 2);
 
 		if ( _.options.arrows === true &&
-			_.slideCount > _.options.slidesToShow &&
-			!_.options.infinite ) {
+			 _.slideCount > _.options.slidesToShow &&
+			 !_.options.infinite ) {
 
-			var $prevArrow = _.$prevArrow[0],
-				$nextArrow = _.$nextArrow[0];
+				 var $prevArrow = _.$prevArrow[0],
+					 $nextArrow = _.$nextArrow[0];
 
-			$prevArrow.classList.remove('slick-disabled');
-			$prevArrow.setAttribute('aria-disabled', 'false');
-			$nextArrow.classList.remove('slick-disabled');
-			$nextArrow.setAttribute('aria-disabled', 'false');
+				 $prevArrow.classList.remove('slick-disabled');
+				 $prevArrow.setAttribute('aria-disabled', 'false');
+				 $nextArrow.classList.remove('slick-disabled');
+				 $nextArrow.setAttribute('aria-disabled', 'false');
 
-			if (_.currentSlide === 0) {
+				 if (_.currentSlide === 0) {
 
-				$prevArrow.classList.add('slick-disabled');
-				$prevArrow.setAttribute('aria-disabled', 'true');
-				$nextArrow.classList.remove('slick-disabled');
-				$nextArrow.setAttribute('aria-disabled', 'false');
+					 $prevArrow.classList.add('slick-disabled');
+					 $prevArrow.setAttribute('aria-disabled', 'true');
+					 $nextArrow.classList.remove('slick-disabled');
+					 $nextArrow.setAttribute('aria-disabled', 'false');
 
-			} else if (_.currentSlide >= _.slideCount - _.options.slidesToShow && _.options.centerMode === false) {
+				 } else if (_.currentSlide >= _.slideCount - _.options.slidesToShow && _.options.centerMode === false) {
 
-				$nextArrow.classList.add('slick-disabled');
-				$nextArrow.setAttribute('aria-disabled', 'true');
-				$prevArrow.classList.remove('slick-disabled');
-				$prevArrow.setAttribute('aria-disabled', 'false');
+					 $nextArrow.classList.add('slick-disabled');
+					 $nextArrow.setAttribute('aria-disabled', 'true');
+					 $prevArrow.classList.remove('slick-disabled');
+					 $prevArrow.setAttribute('aria-disabled', 'false');
 
-			} else if (_.currentSlide >= _.slideCount - 1 && _.options.centerMode === true) {
+				 } else if (_.currentSlide >= _.slideCount - 1 && _.options.centerMode === true) {
 
-				$nextArrow.classList.add('slick-disabled');
-				$nextArrow.setAttribute('aria-disabled', 'true');
-				$prevArrow.classList.remove('slick-disabled');
-				$prevArrow.setAttribute('aria-disabled', 'false');
+					 $nextArrow.classList.add('slick-disabled');
+					 $nextArrow.setAttribute('aria-disabled', 'true');
+					 $prevArrow.classList.remove('slick-disabled');
+					 $prevArrow.setAttribute('aria-disabled', 'false');
 
-			}
+				 }
 
-		}
+			 }
 
 	};
 
@@ -2997,11 +2994,11 @@ Issues: http://github.com/kenwheeler/slick/issues
 	// Equivalent to jQuery.is() method
 	Slick.prototype.matches = function(el, selector) {
 		return (el instanceof HTMLElement) ? (el.matches
-				|| el.matchesSelector
-				|| el.msMatchesSelector
-				|| el.mozMatchesSelector
-				|| el.webkitMatchesSelector
-				|| el.oMatchesSelector)
+											  || el.matchesSelector
+											  || el.msMatchesSelector
+											  || el.mozMatchesSelector
+											  || el.webkitMatchesSelector
+											  || el.oMatchesSelector)
 			.call(el, selector) : false;
 	};
 
@@ -3011,14 +3008,35 @@ Issues: http://github.com/kenwheeler/slick/issues
 	// @usage Slick.getClosest(el, '.my-selector');
 	// Equivalent to jQuery.closest() method
 	Slick.prototype.getClosest = function(el, selector) {
+		// Variables
+		var initEl = el;
 		var firstChar = selector.charAt(0);
+		var supports = 'classList' in document.documentElement;
+		var attribute, value;
+
+		// If selector is a data attribute, split attribute from value
+		if (firstChar === '[') {
+			selector = selector.substr(1, selector.length - 2);
+			attribute = selector.split('=');
+
+			if (attribute.length > 1) {
+				value = true;
+				attribute[1] = attribute[1].replace(/"/g, '').replace(/'/g, '');
+			}
+		}
 
 		// Get closest match
-		for (; el && el !== document; el = el.parentNode) {
+		for (; el && el !== document && el.nodeType === 1; el = el.parentNode) {
 			// If selector is a class
 			if (firstChar === '.') {
-				if (el.classList.contains(selector.substr(1))) {
-					return el;
+				if (supports) {
+					if (el.classList.contains(selector.substr(1))) {
+						return el;
+					}
+				} else {
+					if (new RegExp('(^|\\s)' + selector.substr(1) + '(\\s|$)').test(el.className)) {
+						return el;
+					}
 				}
 			}
 
@@ -3031,8 +3049,14 @@ Issues: http://github.com/kenwheeler/slick/issues
 
 			// If selector is a data attribute
 			if (firstChar === '[') {
-				if (el.hasAttribute( selector.substr(1, selector.length - 2) )) {
-					return el;
+				if (el.hasAttribute(attribute[0])) {
+					if (value) {
+						if (el.getAttribute(attribute[0]) === attribute[1]) {
+							return el;
+						}
+					} else {
+						return el;
+					}
 				}
 			}
 
@@ -3042,7 +3066,7 @@ Issues: http://github.com/kenwheeler/slick/issues
 			}
 		}
 
-		return false;
+		return initEl;
 	};
 
 	// @param  {Node} `el` The base element
@@ -3056,10 +3080,29 @@ Issues: http://github.com/kenwheeler/slick/issues
 		return height;
 	};
 
+	// @param  {Node} `el` The base element
+	// @param  {String} `eventType` The event type or name
+	// @param  {Object} `eventData` The detail property. Data associated with the event
+	// @usage : Slick.triggerEvent(element, 'mousedown', [myBigFatData, 'Hello Goodbye!']);
+	Slick.prototype.triggerEvent = function(el, eventType, eventData) {
+		var _customEvent;
+
+		if (window.CustomEvent) {
+			_customEvent = new CustomEvent(eventType, {detail: eventData});
+
+		} else {
+			_customEvent = document.createEvent('CustomEvent');
+
+			_customEvent.initCustomEvent(eventType, true, true, eventData);
+		}
+
+		el.dispatchEvent(_customEvent);
+	};
+
 	//next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
 	Slick.prototype.queryAll = function (expr, container) {
 		return Array.prototype.slice.call((container || document).querySelectorAll(expr));
-	}
+	};
 
 	$.fn.slick = function() {
 		var _ = this,
