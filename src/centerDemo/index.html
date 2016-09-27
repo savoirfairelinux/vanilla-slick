@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+
+    <title>Vanilla Slick - the last carousel you'll ever need</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="/slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="../common/style.css">
+    <script src="../common/modernizr.min.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <main>
+      <section id="features" class="blue">
+        <div class="content">
+				    <h2>Center Mode</h2>
+				    <div class="slider center">
+					    <div><h3>1</h3></div>
+					    <div><h3>2</h3></div>
+					    <div><h3>3</h3></div>
+					    <div><h3>4</h3></div>
+					    <div><h3>5</h3></div>
+					    <div><h3>6</h3></div>
+				    </div>
+      </section>
+    </main>
+
+    <script src="../common/jquery-1.11.0.min.js"></script>
+    <script src="../common/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/slick/slick.js"></script>
+    <script>
+      $(document).ready(function() {
+
+        $('.center').slick({
+            centerMode: true,
+            infinite: true,
+            centerPadding: '60px',
+            slidesToShow: 3,
+            speed: 500,
+            responsive: [{
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 3
+                }
+            }, {
+                breakpoint: 480,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                }
+            }]
+        });
+
+      });
+    </script>
+  </body>
+</html>

@@ -2207,13 +2207,12 @@
 		_.transformsEnabled = _.options.useTransform && (_.animType !== null && _.animType !== false);
 	};
 
-
 	Slick.prototype.setSlideClasses = function(index) {
 
 		var _ = this,
 			centerOffset, allSlides, indexOffset, remainder, _slidesToShow;
-		var _slider = _.$slider.get()[0],
-			_slides = _.$slides.toArray();
+		var _slider = _.$slider.get(0),
+			_slides = _.$slides.get();
 
 		allSlides = _.queryAll('.slick-slide', _slider);
 
@@ -2224,8 +2223,8 @@
 			$myElem.setAttribute('aria-hidden', 'true');
 		})
 
-		if (_slides[index]) {
-			_slides[index].classList.add('slick-current');
+		if (_.eq(_slides, index)) {
+			_.eq(_slides, index).classList.add('slick-current');
 		}
 
 		if (_.options.centerMode === true) {
@@ -2256,20 +2255,20 @@
 
 				if (index === 0) {
 
-					allSlides[allSlides.length - 1 - _.options.slidesToShow]
+					_.eq(allSlides, allSlides.length - 1 - _.options.slidesToShow)
 						.classList.add('slick-center');
 
 				} else if (index === _.slideCount - 1) {
 
-					allSlides[_.options.slidesToShow]
+					_.eq(allSlides, _.options.slidesToShow)
 						.classList.add('slick-center');
 
 				}
 
 			}
 
-			if (_slides[index]) {
-				_slides[index].classList.add('slick-current');
+			if (_.eq(_slides, index)) {
+				_.eq(_slides, index).classList.add('slick-center');
 			}
 
 		} else {
@@ -2985,6 +2984,23 @@
 
 		return Array.prototype.filter.call(collectionOfNode, filterFunction);
 
+	};
+
+	// @param  {Array} `elementArray` Array from which to take the element at `index`
+	// @param  {Number} `index` index of the element
+	// @return {Node} HTMLElement at `index` param || {Boolean} false
+	// @usage Slick.eq(myArray, -1); //get the last element of the array
+	// Equivalent to jQuery.eq() method
+	Slick.prototype.eq = function(elementArray, index) {
+		var arrayLength = elementArray.length,
+			elementIndexToReturn = 0+index;
+		if (elementIndexToReturn < 0) {
+			elementIndexToReturn += arrayLength;
+		}
+		if (elementIndexToReturn < 0 || elementIndexToReturn >= arrayLength) {
+			return false;
+		}
+		return elementArray[elementIndexToReturn];
 	};
 
 	// @param  {Node} `el` The base element
