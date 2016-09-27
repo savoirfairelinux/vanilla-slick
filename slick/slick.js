@@ -3077,9 +3077,11 @@
 	// @usage Slick.outerHeight(el);
 	Slick.prototype.outerHeight = function(el) {
 		var height = el.offsetHeight,
-			style = getComputedStyle(el);
+			style = getComputedStyle(el),
+			marginTop = parseInt(style.marginTop) || 0,
+			marginBottom = parseInt(style.marginBottom) || 0;
 
-		height += parseInt(style.marginTop) + parseInt(style.marginBottom);
+		height += marginTop + marginBottom;
 		return height;
 	};
 
@@ -3088,9 +3090,11 @@
 	// @usage Slick.outerWidth(el);
 	Slick.prototype.outerWidth = function(el) {
 		var width = el.offsetWidth,
-			style = getComputedStyle(el);
+			style = getComputedStyle(el),
+			marginLeft = parseInt(style.marginLeft) || 0,
+			marginRight = parseInt(style.marginRight) || 0;
 
-		width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+		width += marginLeft + marginRight;
 		return width;
 	};
 
@@ -3099,9 +3103,13 @@
 	// @usage Slick.width(el);
 	Slick.prototype.width = function(el) {
 		var width = el.offsetWidth,
-			style = getComputedStyle(el);
+			style = getComputedStyle(el),
+			paddingLeft = parseInt(style.paddingLeft) || 0,
+			paddingRight = parseInt(style.paddingRight) || 0,
+			borderLeft = parseInt(style.borderLeft) || 0,
+			borderRight = parseInt(style.borderRight) || 0;
 
-		width -= (parseInt(style.paddingLeft) + parseInt(style.paddingRight) + parseInt(style.borderLeft) + parseInt(style.borderRight));
+		width -= (paddingLeft + paddingRight + borderLeft + borderRight);
 		return width;
 	};
 
@@ -3110,9 +3118,13 @@
 	// @usage Slick.height(el);
 	Slick.prototype.height = function(el) {
 		var height = el.offsetWidth,
-			style = getComputedStyle(el);
+			style = getComputedStyle(el),
+			paddingTop = parseInt(style.paddingTop) || 0,
+			paddingBottom = parseInt(style.paddingBottom) || 0,
+			borderTop = parseInt(style.borderTop) || 0,
+			borderBottom = parseInt(style.borderBottom) || 0;
 
-		height -= (parseInt(style.paddingTop) + parseInt(style.paddingBottom) + parseInt(style.borderTop) + parseInt(style.borderBottom));
+		height -= (paddingTop + paddingBottom + borderTop + borderBottom);
 		return height;
 	};
 
