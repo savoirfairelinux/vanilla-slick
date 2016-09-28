@@ -2794,12 +2794,18 @@
 		var _ = this;
 
 		if (_.$slidesCache !== null) {
+			var _slidesCache = _.$slidesCache.get(),
+				_slideTrack = _.$slideTrack.get(0)
 
 			_.unload();
 
-			_.$slideTrack.children(this.options.slide).detach();
+			var slidesToDetach = _.filterNodeUtil(_slideTrack.children, _.options.slide)
 
-			_.$slidesCache.appendTo(_.$slideTrack);
+			slidesToDetach.forEach(function(elem) { _slideTrack.removeChild(elem); });
+
+			_slidesCache.forEach(function(elem) {
+				_slideTrack.appendChild(elem);
+			});
 
 			_.reinit();
 
