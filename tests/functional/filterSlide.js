@@ -19,6 +19,22 @@ define(function(require) {
 	registerSuite({
 		name: 'filterSlide',
 
+        'checkEverythingOkBefore': function() {
+            return this.remote
+                .get(require.toUrl('src/filterSlide/index.html'))
+                .execute(initErrorLog)
+                .setFindTimeout(5000)
+                .findAllByCssSelector('.slick-slide:not(.slick-cloned)')
+                .getVisibleText()
+                .then(function(arrayText) {
+                    assert.deepEqual(['1','2','3','4','','','','','','','',''], arrayText,
+                        'All the slide should be present and the first 4 displayed');
+                })
+                .execute(returnErrorLog)
+                    .then(testErrorLog)
+                    .end();
+        },
+
 		'filterByCssSelector': function() {
 			return this.remote
 				.get(require.toUrl('src/filterSlide/index.html'))
