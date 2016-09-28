@@ -2140,7 +2140,7 @@
 			_.setFade();
 		}
 
-		_.$slider.trigger('setPosition', [_]);
+		_.triggerEvent(_.$slider.get(0), 'setPosition', [_]);
 
 	};
 
