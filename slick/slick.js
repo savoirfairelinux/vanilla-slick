@@ -2806,25 +2806,31 @@
 
 	Slick.prototype.unload = function() {
 
-		var _ = this;
+		var _ = this
+			_.d_$slides = _.$slides.get(),
+			_.d_$slider = _.$slider.get(0),
+			_.d_$dots = _.$dots ? _.$dots.get(0) : false,
+			_.d_$prevArrow = _.$prevArrow ? _.$prevArrow.get(0) : false,
+			_.d_$nextArrow = _.$nextArrow ? _.$nextArrow.get(0) : false;
+			// $dots, $prevArrow and $nextArrow can be `null` or a `node`
 
-		_.queryAll('.slick-cloned', _.$slider.get(0)).forEach(function(elem){
+		_.queryAll('.slick-cloned', _.d_$slider).forEach(function(elem){
 			_.removeNodeUtil(elem);
 		});
 
-		if (_.$dots) { // TODO after vanillate _$dots, check condition
-			_.removeNodeUtil(_.$dots.get(0));
+		if (_.d_$dots) {
+			_.removeNodeUtil(_.d_$dots);
 		}
 
-		if (_.$prevArrow && _.htmlExpr.test(_.options.prevArrow)) {  // TODO after vanillate _$prevArrow, check condition
-			_.removeNodeUtil(_.$prevArrow.get(0));
+		if (_.d_$prevArrow && _.htmlExpr.test(_.options.prevArrow)) {
+			_.removeNodeUtil(_.d_$prevArrow);
 		}
 
-		if (_.$nextArrow && _.htmlExpr.test(_.options.nextArrow)) {  // TODO after vanillate _$nextArrow, check condition
-			_.removeNodeUtil(_.$nextArrow.get(0));
+		if (_.d_$nextArrow && _.htmlExpr.test(_.options.nextArrow)) {
+			_.removeNodeUtil(_.d_$nextArrow);
 		}
 
-		_.$slides.get().forEach(function(elem){
+		_.d_$slides.forEach(function(elem){
 			elem.classList.remove('slick-slide','slick-active','slick-visible','slick-current');
 			elem.setAttribute('aria-hidden', 'true');
 			elem.style.width = '';
