@@ -158,16 +158,50 @@ $(document).ready(function() {
             $(this).text('Filter Slides');
             filtered = false;
         }
+    });	
+
+	$('.slider-to-destroy').slick({
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
     });
 
-    $('.slider-for').slick({
+	$('#destroyBtn').removeAttr('disabled');
+	$('#reSlickBtn').attr('disabled', 'disabled');
+
+	$('#destroyBtn').on('click', function(thatEvt) {
+		$('.slider-to-destroy').slick('unslick');
+		
+		$(this).attr('disabled', 'disabled');
+
+		$('#reSlickBtn').removeAttr('disabled');
+	});
+
+	$('#reSlickBtn').on('click', function(thatEvt) {
+		$('.slider-to-destroy').slick({
+			dots: true,
+			infinite: true,
+			speed: 500,
+			slidesToShow: 1,
+			slidesToScroll: 1
+		});
+		
+		$(this).attr('disabled', 'disabled');
+
+		$('#destroyBtn').removeAttr('disabled');
+	});
+
+	$('.slider-for').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         speed: 500,
         arrows: false,
         fade: true,
         asNavFor: '.slider-nav'
-    });
+    });	
+	
     $('.slider-nav').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
