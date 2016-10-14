@@ -2806,13 +2806,14 @@
 
 	Slick.prototype.unload = function() {
 
-		var _ = this
-			_.$$slides = _.$slides.get(),
-			_.$$slider = _.$slider.get(0),
-			_.$$dots = _.$dots ? _.$dots.get(0) : false,
-			_.$$prevArrow = _.$prevArrow ? _.$prevArrow.get(0) : false,
-			_.$$nextArrow = _.$nextArrow ? _.$nextArrow.get(0) : false;
-			// $dots, $prevArrow and $nextArrow can be `null` or a `node`
+		var _ = this;
+
+		_.$$slides = _.$slides.get();
+		_.$$slider = _.$slider.get(0);
+		_.$$dots = _.$dots ? _.$dots.get(0) : false;
+		_.$$prevArrow = _.$prevArrow ? _.$prevArrow.get(0) : false;
+		_.$$nextArrow = _.$nextArrow ? _.$nextArrow.get(0) : false;
+		// $dots, $prevArrow and $nextArrow can be `null` or a `node`
 
 		_.queryAll('.slick-cloned', _.$$slider).forEach(function(elem){
 			_.removeNodeUtil(elem);
