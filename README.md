@@ -1,4 +1,4 @@
-Vanilla Slick
+Vanilla Slick [![Build Status](https://travis-ci.org/savoirfairelinux/vanilla-slick.svg?branch=develop)](https://travis-ci.org/savoirfairelinux/vanilla-slick)
 =============
 
 [1]: <https://github.com/kenwheeler/slick>
