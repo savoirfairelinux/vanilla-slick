@@ -528,36 +528,43 @@
 
 	Slick.prototype.buildOut = function() {
 
-		var _ = this;
+		var _ = this
+			_.$$_$slider = _.$slider.get(0);
 
-		_.$slides =
-			_.$slider
-			.children( _.options.slide + ':not(.slick-cloned)')
-			.addClass('slick-slide');
+		_.$$_$slideTrack = document.createElement('div');
+		_.$$_$list = document.createElement('div');
+		_.$$_$slides = _.filterNodeUtil(_.$$_$slider.children, _.options.slide + ':not(.slick-cloned)');
+		_.slideCount = _.$$_$slides.length;
 
-		_.slideCount = _.$slides.length;
+		_.$$_$slider.classList.add('slick-slider');
+		_.$$_$slideTrack.classList.add('slick-track');
+		_.$$_$slideTrack.style.opacity = 0;
+		_.$$_$list.setAttribute('aria-live', 'polite');
+		_.$$_$list.classList.add('slick-list');
 
-		_.$slides.each(function(index, element) {
-			$(element)
-				.attr('data-slick-index', index)
-				.data('originalStyling', $(element).attr('style') || '');
+		_.$$_$slides.forEach(function(elem, index) {
+			_.$$_$slideTrack.appendChild(elem);
+			elem.classList.add('slick-slide');
+			elem.setAttribute('data-slick-index', index);
+			elem.setAttribute('data-originalStyling', elem.getAttribute('style') || '');
 		});
 
-		_.$slider.addClass('slick-slider');
+		_.$$_$list.appendChild(_.$$_$slideTrack);
+		_.$$_$slider.appendChild(_.$$_$list);
 
-		_.$slideTrack = (_.slideCount === 0) ?
-			$('<div class="slick-track"/>').appendTo(_.$slider) :
-			_.$slides.wrapAll('<div class="slick-track"/>').parent();
-
-		_.$list = _.$slideTrack.wrap(
-			'<div aria-live="polite" class="slick-list"/>').parent();
-		_.$slideTrack.css('opacity', 0);
 
 		if (_.options.centerMode === true || _.options.swipeToSlide === true) {
 			_.options.slidesToScroll = 1;
 		}
 
-		$('img[data-lazy]', _.$slider).not('[src]').addClass('slick-loading');
+		_.queryAll('img[data-lazy]:not([src])', _.$$_$slider).forEach(function(elem) {
+			elem.classList.add('slick-loading');
+		});
+
+		_.$slides = $(_.$$_$slides); //TODO remove at end
+		_.$slideTrack = $(_.$$_$slideTrack); //TODO remove at end
+		_.$list = $(_.$$_$list); //TODO remove at end
+		_.$slider = $(_.$$_$slider); //TODO remove at end
 
 		_.setupInfinite();
 
@@ -567,11 +574,12 @@
 
 		_.updateDots();
 
-
 		_.setSlideClasses(typeof _.currentSlide === 'number' ? _.currentSlide : 0);
 
 		if (_.options.draggable === true) {
-			_.$list.addClass('draggable');
+			_.$$_$list = _.$list.get(0); //TODO remove at end
+			_.$$_$list.classList.add('draggable');
+			_.$list = $(_.$$_$list); //TODO remove at end
 		}
 
 	};
