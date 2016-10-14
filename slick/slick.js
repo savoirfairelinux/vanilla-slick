@@ -624,8 +624,11 @@
 
 		var _ = this,
 			breakpoint, targetBreakpoint, respondToWidth, triggerBreakpoint = false;
-		var sliderWidth = _.$slider.width();
-		var windowWidth = window.innerWidth || $(window).width();
+		
+		_.$$slider = _.$slider.get(0);
+
+		var sliderWidth = _.width(_.$$slider);
+		var windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
 		if (_.respondTo === 'window') {
 			respondToWidth = windowWidth;
@@ -702,7 +705,7 @@
 
 			// only trigger breakpoints during an actual break. not on initialize.
 			if( !initial && triggerBreakpoint !== false ) {
-				_.triggerEvent(_.$slider.get(0), 'breakpoint', [_, triggerBreakpoint]);
+				_.triggerEvent(_.$$slider, 'breakpoint', [_, triggerBreakpoint]);
 			}
 		}
 
