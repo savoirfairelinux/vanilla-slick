@@ -180,13 +180,7 @@ $(document).ready(function() {
 	});
 
 	$('#reSlickBtn').on('click', function(thatEvt) {
-		$('.slider-to-destroy').slick({
-			dots: true,
-			infinite: true,
-			speed: 500,
-			slidesToShow: 1,
-			slidesToScroll: 1
-		});
+		$('.slider-to-destroy').slick();
 		
 		$(this).attr('disabled', 'disabled');
 
