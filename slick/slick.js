@@ -864,7 +864,9 @@
 	};
 
 	Slick.prototype.destroy = function(refresh) {
-		var _ = this;		
+		var _ = this;
+		var _$$slider = _.$slider.get(0);
+		var _$$dots = _.$dots.get(0);
 
 		_.autoPlayClear();
 
@@ -872,11 +874,16 @@
 
 		_.cleanUpEvents();
 
-		$('.slick-cloned', _.$slider).detach();
+		//$('.slick-cloned', _.$slider).detach();
 
-		if (_.$dots) {
-			_.$dots.remove();
+		//_.detach(_$$slider);
+
+
+		if (_$$dots) {
+			_$$slider.removeChild(_$$dots);
 		}
+
+		console.log(_.$slides, _.$prevArrow, _.$nextArrow);
 
 		if ( _.$prevArrow && _.$prevArrow.length ) {
 
