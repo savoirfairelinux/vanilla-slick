@@ -2,6 +2,20 @@ define(function (require) {
     var registerSuite = require('intern!object');
     var assert = require('intern/chai!assert');
 
+    var initErrorLog = function() {
+        window.__internErrors__ = [];
+        window.onerror = function() {
+            __internErrors__.push(Array.prototype.slice.call(arguments, 0));
+        };
+    };
+    var returnErrorLog = function() {
+        return window.__internErrors__;
+    };
+    var testErrorLog = function(errors) {
+        assert.equal(0, errors.length,
+            'The simple page sould not have javascript errors\n' + errors.join('\n') + "\n");
+    };
+
     registerSuite({
         name: 'simple',
 
@@ -9,16 +23,19 @@ define(function (require) {
             return this.remote
                 .get(require.toUrl('src/sample/index.html'))
                 .setFindTimeout(5000)
+                .execute(initErrorLog)
                 .findByCssSelector('#single-item [aria-controls="navigation04"]')
                     .click()
                     .end()
                 .findByCssSelector('#single-item .slick-current')
-                    .sleep(300)
-                    .getVisibleText()
-                    .then(function (text) {
-                        assert.strictEqual('5', text,
-                            'The slide 5 should be active');
-                    });
+                .sleep(300)
+                .getVisibleText()
+                .then(function (text) {
+                    assert.strictEqual('5', text,
+                        'The slide 5 should be active');
+                })
+                .execute(returnErrorLog)
+        		.then(testErrorLog);
         },
 
         'simple-item-back-6': function () {
