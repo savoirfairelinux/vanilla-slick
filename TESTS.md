@@ -21,7 +21,7 @@ Selenium is an interface that can interact with multiple browsers for testing. Y
 You can start it with the following line, no configuration should be necessary. It should be running before you start the tests.
 
 ```sh
-java -jar selenium-server-standalone-2.53.0.jar
+java -jar selenium-server-standalone-2.53.1.jar
 ```
 
 
@@ -30,6 +30,3 @@ java -jar selenium-server-standalone-2.53.0.jar
 ```sh
 ./node_modules/.bin/intern-runner config=tests/intern
 ```
-
-
-

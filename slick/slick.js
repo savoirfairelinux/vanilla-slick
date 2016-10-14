@@ -2825,24 +2825,34 @@
 
 		var _ = this;
 
-		$('.slick-cloned', _.$slider).remove();
+		_.$$slides = _.$slides.get();
+		_.$$slider = _.$slider.get(0);
+		_.$$dots = _.$dots ? _.$dots.get(0) : false;
+		_.$$prevArrow = _.$prevArrow ? _.$prevArrow.get(0) : false;
+		_.$$nextArrow = _.$nextArrow ? _.$nextArrow.get(0) : false;
+		// $dots, $prevArrow and $nextArrow can be `null` or a `node`
 
-		if (_.$dots) {
-			_.$dots.remove();
+		_.queryAll('.slick-cloned', _.$$slider).forEach(function(elem){
+			_.removeNodeUtil(elem);
+		});
+
+		if (_.$$dots) {
+			_.removeNodeUtil(_.$$dots);
 		}
 
-		if (_.$prevArrow && _.htmlExpr.test(_.options.prevArrow)) {
-			_.$prevArrow.remove();
+		if (_.$$prevArrow && _.htmlExpr.test(_.options.prevArrow)) {
+			_.removeNodeUtil(_.$$prevArrow);
 		}
 
-		if (_.$nextArrow && _.htmlExpr.test(_.options.nextArrow)) {
-			_.$nextArrow.remove();
+		if (_.$$nextArrow && _.htmlExpr.test(_.options.nextArrow)) {
+			_.removeNodeUtil(_.$$nextArrow);
 		}
 
-		_.$slides
-			.removeClass('slick-slide slick-active slick-visible slick-current')
-			.attr('aria-hidden', 'true')
-			.css('width', '');
+		_.$$slides.forEach(function(elem){
+			elem.classList.remove('slick-slide','slick-active','slick-visible','slick-current');
+			elem.setAttribute('aria-hidden', 'true');
+			elem.style.width = '';
+		});
 
 	};
 
@@ -3100,6 +3110,17 @@
 		}
 
 		return initEl;
+	};
+
+	// @param  {Node} `el` The element to remove
+	// @return {Node} The element removed.
+	// @usage Slick.removeNodeUtil(el);
+	Slick.prototype.removeNodeUtil = function(el) {
+		var nodeRemoved = el;
+		if (el.parentNode){ //Prevent error if node is allready out the dom.
+			nodeRemoved = el.parentNode.removeChild(el);
+		}
+		return nodeRemoved;
 	};
 
 	// @param  {Node} `el` The base element
