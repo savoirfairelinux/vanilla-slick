@@ -2340,7 +2340,9 @@
 	Slick.prototype.setupInfinite = function() {
 
 		var _ = this,
-			i, slideIndex, infiniteCount;
+			i, slideIndex, infiniteCount,
+			_slides = _.$slides.get(),
+			_slideTrack = _.$slideTrack.get(0);
 
 		if (_.options.fade === true) {
 			_.options.centerMode = false;
@@ -2358,21 +2360,25 @@
 					infiniteCount = _.options.slidesToShow;
 				}
 
-				for (i = _.slideCount; i > (_.slideCount -
-											infiniteCount); i -= 1) {
-					slideIndex = i - 1;
-					$(_.$slides[slideIndex]).clone(true).attr('id', '')
-						.attr('data-slick-index', slideIndex - _.slideCount)
-						.prependTo(_.$slideTrack).addClass('slick-cloned');
-				}
-				for (i = 0; i < infiniteCount; i += 1) {
-					slideIndex = i;
-					$(_.$slides[slideIndex]).clone(true).attr('id', '')
-						.attr('data-slick-index', slideIndex + _.slideCount)
-						.appendTo(_.$slideTrack).addClass('slick-cloned');
-				}
-				_.$slideTrack.find('.slick-cloned').find('[id]').each(function() {
-					$(this).attr('id', '');
+				var slidesToPrepend = _slides.slice(_.slideCount - infiniteCount, _.slideCount);
+				var slidesToAppend = _slides.slice(0, infiniteCount);
+
+				slidesToPrepend.reverse().forEach(function(element) {
+					slideIndex = element.getAttribute('data-slick-index')
+					var clonedElement = element.cloneNode(true);
+					clonedElement.removeAttribute('id');
+					clonedElement.setAttribute('data-slick-index', slideIndex - _.slideCount);
+					clonedElement.classList.add('slick-cloned');
+					_slideTrack.insertBefore(clonedElement, _slideTrack.firstChild);
+				});
+
+				slidesToAppend.forEach(function(element) {
+					slideIndex = element.getAttribute('data-slick-index')
+					var clonedElement = element.cloneNode(true);
+					clonedElement.removeAttribute('id');
+					clonedElement.setAttribute('data-slick-index', (1*slideIndex + _.slideCount));
+					clonedElement.classList.add('slick-cloned');
+					_slideTrack.appendChild(clonedElement);
 				});
 
 			}
