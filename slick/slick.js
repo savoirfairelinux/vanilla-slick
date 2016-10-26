@@ -28,6 +28,7 @@
 
 }(function($) {
 	'use strict';
+
 	var Slick = window.Slick || {};
 
 	Slick = (function() {
@@ -966,32 +967,48 @@
 	};
 
 	Slick.prototype.fadeSlide = function(slideIndex, callback) {
-
-		var _ = this;
+		// TODO easing on animations, polyfill for requestAnimationFrame()
+        var _ = this;
+        var _slides = _.$slides.get();
 
 		if (_.cssTransitions === false) {
+			
+            _slides[slideIndex].style.zindex = _.options.zIndex
 
-			_.$slides.eq(slideIndex).css({
-				zIndex: _.options.zIndex
-			});
+			var start = null;
+			var frameID;
+			var s = _slides[slideIndex];
+			var start = Date.now();
 
-			_.$slides.eq(slideIndex).animate({
-				opacity: 1
-			}, _.options.speed, _.options.easing, callback);
+			function fadeSlideAnimation() {
+				var time = Date.now() - start;
+				var progress = time / _.options.speed;
+				progress = _.EasingFunctions[_.options.easing](progress);
+				if (progress > 1){progress = 1;};
+				s.style.opacity = progress;
+				if ( progress >= 1){
+					cancelAnimationFrame(frameID);
+					return;
+				}
+				frameID = requestAnimationFrame(fadeSlideAnimation);
+			}
 
-		} else {
+			frameID = requestAnimationFrame(fadeSlideAnimation);
+			callback.call();
 
-			_.applyTransition(slideIndex);
+			} else {
 
-			_.$slides.eq(slideIndex).css({
-				opacity: 1,
-				zIndex: _.options.zIndex
-			});
+				_.applyTransition(slideIndex);
 
-			if (callback) {
-				setTimeout(function() {
+				_.$slides.eq(slideIndex).css({
+					opacity: 1,
+					zIndex: _.options.zIndex
+				});
 
-					_.disableTransition(slideIndex);
+				if (callback) {
+					setTimeout(function() {
+
+						_.disableTransition(slideIndex);
 
 					callback.call();
 				}, _.options.speed);
@@ -1002,15 +1019,28 @@
 	};
 
 	Slick.prototype.fadeSlideOut = function(slideIndex) {
-
+		// TODO easing on animations, polyfill for requestAnimationFrame()
 		var _ = this;
+        var _slides = _.$slides.get();
 
 		if (_.cssTransitions === false) {
+			var start = null;
+			var frameIDfadeOut;
+			var s = _slides[slideIndex];
+			var start = Date.now();
 
-			_.$slides.eq(slideIndex).animate({
-				opacity: 0,
-				zIndex: _.options.zIndex - 2
-			}, _.options.speed, _.options.easing);
+			function fadeOutAnimation() {
+				var time = Date.now() - start;
+				var progress = 1 - (time / _.options.speed);
+				s.style.opacity = progress;
+				if ( progress <= 0){
+					cancelAnimationFrame(frameIDfadeOut);
+					return;
+				}
+				frameIDfadeOut = requestAnimationFrame(fadeOutAnimation);
+			}
+			frameIDfadeOut = requestAnimationFrame(fadeOutAnimation);
+
 
 		} else {
 
