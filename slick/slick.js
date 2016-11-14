@@ -624,7 +624,7 @@
 
 		var _ = this,
 			breakpoint, targetBreakpoint, respondToWidth, triggerBreakpoint = false;
-		
+
 		_.$$slider = _.$slider.get(0);
 
 		var sliderWidth = _.width(_.$$slider);
@@ -1324,34 +1324,42 @@
 
 	Slick.prototype.initADA = function() {
 		var _ = this;
-		_.$slides.add(_.$slideTrack.find('.slick-cloned')).attr({
-			'aria-hidden': 'true',
-			'tabindex': '-1'
-		}).find('a, input, button, select').attr({
-			'tabindex': '-1'
-		});
 
-		_.$slideTrack.attr('role', 'listbox');
+		_.$$slides = _.$slides.get();
+		_.$$slideTrack = _.$slideTrack.get(0);
+		_.$$dots = _.$dots ? _.$dots.get(0) : false;
 
-		_.$slides.not(_.$slideTrack.find('.slick-cloned')).each(function(i) {
-			$(this).attr({
-				'role': 'option',
-				'aria-describedby': 'slick-slide' + _.instanceUid + i + ''
+		// Apply on all slides and all cloned slides
+		_.$$slides.concat(_.filterNodeUtil(_.$$slideTrack.children, '.slick-cloned')).forEach(function(slideElem){
+			slideElem.setAttribute('aria-hidden', 'true');
+			slideElem.setAttribute('tabindex', '-1');
+			_.queryAll('a, input, button, select', slideElem).forEach(function(innerSlideElem){
+				innerSlideElem.setAttribute('tabindex', '-1');
 			});
 		});
 
-		if (_.$dots !== null) {
-			_.$dots.attr('role', 'tablist').find('li').each(function(i) {
-				$(this).attr({
-					'role': 'presentation',
-					'aria-selected': 'false',
-					'aria-controls': 'navigation' + _.instanceUid + i + '',
-					'id': 'slick-slide' + _.instanceUid + i + ''
-				});
-			})
-				.first().attr('aria-selected', 'true').end()
-				.find('button').attr('role', 'button').end()
-				.closest('div').attr('role', 'toolbar');
+		_.$$slideTrack.setAttribute('role', 'listbox');
+
+		_.$$slides.forEach(function(elem, index) {
+			elem.setAttribute('role', 'option');
+			elem.setAttribute('aria-describedby', 'slick-slide' + _.instanceUid + index + '');
+		});
+
+		if (_.$$dots) {
+			_.$$dots.setAttribute('role', 'tablist');
+			_.queryAll('li', _.$$dots).forEach(function(dot, index){
+				dot.setAttribute('role', 'presentation');
+				dot.setAttribute('aria-selected', 'false');
+				dot.setAttribute('aria-controls', 'navigation' + _.instanceUid + index + '');
+				dot.setAttribute('id', 'slick-slide' + _.instanceUid + index + '');
+				if (index === 0){
+					dot.setAttribute('aria-selected', 'true');
+					_.queryAll('button', dot).forEach(function(elemInDot){
+						elemInDot.setAttribute('role', 'button');
+					});
+					_.getClosest(dot, 'div').setAttribute('role', 'toolbar');
+				}
+			});
 		}
 		_.activateADA();
 
