@@ -11,3 +11,8 @@ end_of_line = lf
 [*.{scss,js}]
 indent_style = tab
 indent_size = 4
+
+# html
+[*.html]
+indent_style = space
+indent_size = 2
