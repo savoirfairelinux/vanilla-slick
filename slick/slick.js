@@ -875,8 +875,7 @@
 	};
 
 	Slick.prototype.destroy = function(refresh) {
-
-		var _ = this;
+		var _ = this;		
 
 		_.autoPlayClear();
 
@@ -889,7 +888,6 @@
 		if (_.$dots) {
 			_.$dots.remove();
 		}
-
 
 		if ( _.$prevArrow && _.$prevArrow.length ) {
 
@@ -3183,10 +3181,10 @@
 	};
 
 
-	// @param  {Node} `el` The base element
-	// @param  {String} `eventType` The event type or name
-	// @param  {Object} `eventData` The detail property. Data associated with the event
-	// @usage : Slick.triggerEvent(element, 'mousedown', [myBigFatData, 'Hello Goodbye!']);
+	// @param {Node} `el` The base element
+	// @param {String} `eventType` The event type or name
+	// @param {Object} `eventData` The detail property. Data associated with the event
+	// @usage Slick.triggerEvent(element, 'mousedown', [myBigFatData, 'Hello Goodbye!']);
 	Slick.prototype.triggerEvent = function(el, eventType, eventData) {
 		var _customEvent;
 
@@ -3205,6 +3203,44 @@
 	//next function comes almost directly from http://lea.verou.me/2015/04/jquery-considered-harmful/
 	Slick.prototype.queryAll = function (expr, container) {
 		return Array.prototype.slice.call((container || document).querySelectorAll(expr));
+	};
+
+	// @param {Node} `el` The element to detach
+	// @param {Boolean} `async` Asynchronous or synchronous, default false
+	// @param {Function} `fn` The callback function
+	// @usage Slick.detach($el);
+	// @usage Slick.detach($el, true, function(reattach) { /*this == $el, do stuff here, call reattach() when done!*/ setTimeout(reattach, 1000); });
+	// @source https://gist.github.com/cowboy/938767
+	Slick.prototype.detach = function(el, async, fn) {
+		var parent = el.parentNode;
+		var next = el.nextSibling;
+
+		// No parent el? Abort!
+		if (!parent) { return; }
+
+		// Detach el from DOM.
+		parent.removeChild(el);
+
+		// Handle case where optional `async` argument is omitted.
+		if (typeof async !== "boolean") {
+			fn = async;
+			async = false;
+		}
+
+		// Note that if a function wasn't passed, the el won't be re-attached!
+		if (fn && async) {
+			// If async == true, reattach must be called manually.
+			fn.call(el, reattach);
+		} else if (fn) {
+			// If async != true, reattach will happen automatically.
+			fn.call(el);
+			reattach();
+		}
+
+		// Re-attach el to DOM.
+		function reattach() {
+			parent.insertBefore(el, next);
+		}
 	};
 
 	$.fn.slick = function() {
