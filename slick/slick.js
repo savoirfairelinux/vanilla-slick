@@ -2538,21 +2538,28 @@
 	Slick.prototype.startLoad = function() {
 
 		var _ = this;
+		_.$$prevArrow = _.$prevArrow ? _.$prevArrow.get(0) : false;
+		_.$$nextArrow = _.$nextArrow ? _.$nextArrow.get(0) : false;
+		_.$$dots = _.$dots ? _.$dots.get(0) : false;
+		_.$$slider = _.$slider.get(0);
 
 		if (_.options.arrows === true && _.slideCount > _.options.slidesToShow) {
 
-			_.$prevArrow.hide();
-			_.$nextArrow.hide();
+			_.$$prevArrow.style.display = 'none';
+			_.$$nextArrow.style.display = 'none';
 
 		}
 
 		if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
 
-			_.$dots.hide();
+
+			_.$$dots.style.display = 'none';
 
 		}
 
-		_.$slider.addClass('slick-loading');
+		_.$$slider.classList.add('slick-loading');
+
+		_.$slider = $(_.$$slider); //TODO remove at end
 
 	};
 
