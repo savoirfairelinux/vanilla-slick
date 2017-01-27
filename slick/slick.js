@@ -2163,12 +2163,14 @@
 		var _ = this,
 			bodyStyle = document.body.style;
 
+		_.$$slider = _.$slider.get(0);
+
 		_.positionProp = _.options.vertical === true ? 'top' : 'left';
 
 		if (_.positionProp === 'top') {
-			_.$slider.addClass('slick-vertical');
+			_.$$slider.classList.add('slick-vertical');
 		} else {
-			_.$slider.removeClass('slick-vertical');
+			_.$$slider.classList.remove('slick-vertical');
 		}
 
 		if (bodyStyle.WebkitTransition !== undefined ||
