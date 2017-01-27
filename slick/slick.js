@@ -2415,6 +2415,7 @@
 
 		var targetSlide, animSlide, oldSlide, slideLeft, targetLeft = null,
 			_ = this, navTarget;
+		_.$$slider = _.$slider.get(0);
 
 		sync = sync || false;
 
@@ -2488,7 +2489,7 @@
 
 		_.animating = true;
 
-		_.$slider.trigger('beforeChange', [_, _.currentSlide, animSlide]);
+		_.triggerEvent(_.$$slider, 'beforeChange', [_, _.currentSlide, animSlide]);
 
 		oldSlide = _.currentSlide;
 		_.currentSlide = animSlide;
