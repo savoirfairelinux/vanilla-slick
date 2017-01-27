@@ -1359,14 +1359,17 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.initDotEvents = function() {
 
         var _ = this;
-		var elements = _.queryAll('li', _.$dots.get(0));
+
+		var dotChangeSlideEvent = function(customEvent) {
+			customEvent.data = {message: 'index'};
+			return _.changeSlide(customEvent);
+		};
 
         if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
-            [].forEach.call(elements, function(element) {
-                element.addEventListener('click', function(event) {
-                    event.data = {message: 'index'};
-                    _.changeSlide(event);
-                });
+			var elements = _.queryAll('li', _.$dots.get(0));
+			[].forEach.call(elements, function(element) {
+				element.removeEventListener('click', dotChangeSlideEvent);
+				element.addEventListener('click', dotChangeSlideEvent);
             });
         }
 
