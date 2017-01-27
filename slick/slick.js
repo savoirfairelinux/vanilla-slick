@@ -2394,8 +2394,15 @@
 
 	Slick.prototype.selectHandler = function(event) {
 		var _ = this;
-		var targetElement = _.matches($(event.target)[0],'.slick-slide') ? $(event.target) : $(event.target).parents('.slick-slide');
-		var index = parseInt(targetElement.attr('data-slick-index'));
+		var targetElement;
+		if (_.matches(event.target,'.slick-slide')) {
+			targetElement = event.target;
+		}
+		else {
+			targetElement = _.getClosest(event.target, '.slick-slide');
+		}
+
+		var index = parseInt(targetElement.getAttribute('data-slick-index'));
 
 		if (!index) index = 0;
 
