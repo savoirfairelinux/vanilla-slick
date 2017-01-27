@@ -1359,10 +1359,9 @@ Issues: http://github.com/kenwheeler/slick/issues
 	Slick.prototype.initDotEvents = function() {
 
         var _ = this;
+		var elements = _.queryAll('li', _.$dots.get(0));
 
         if (_.options.dots === true && _.slideCount > _.options.slidesToShow) {
-            var elements = _.$dots.get()[0].children;
-
             [].forEach.call(elements, function(element) {
                 element.addEventListener('click', function(event) {
                     event.data = {message: 'index'};
@@ -1376,7 +1375,7 @@ Issues: http://github.com/kenwheeler/slick/issues
                 element.addEventListener('mouseenter', _.interrupt.bind(_, true), false);
                 element.addEventListener('mouseleave', _.interrupt.bind(_, false), false);
             });
-        }
+		}
     };
 
 	Slick.prototype.initSlideEvents = function() {
